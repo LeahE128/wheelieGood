@@ -1,7 +1,8 @@
+# Scraping from the JCDecaux website
+
 import requests
 import time
 import json
-
 
 APIKEY = "faa0b3cb4ae90aba340567484b057e59c72b1a37"
 NAME = "Dublin"
