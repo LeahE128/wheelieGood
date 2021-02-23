@@ -2,9 +2,8 @@
 
 import requests
 import time
-import json
 
-APIKEY = "faa0b3cb4ae90aba340567484b057e59c72b1a37"
+APIKEY = ""
 NAME = "Dublin"
 STATIONS = "https://api.jcdecaux.com/vls/v1/stations"
 
@@ -12,6 +11,7 @@ STATIONS = "https://api.jcdecaux.com/vls/v1/stations"
 def main():
 
     while True:
+        import json
 
         try:
             print("working")
