@@ -1,3 +1,3 @@
 user = ""
-pass = ""
+passw = ""
 uri = ""
