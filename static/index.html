@@ -6,6 +6,15 @@
 </head>
 <body>
 <h1>hello</h1>
+<script>
+
+    fetch("/bikes").then(response => {
+    var data = response.data();
+    console.log("data: ", data);
+    }).catch(err => {
+    console.log("OOPS", err);
+    })
+</script>
 
 </body>
 </html>
