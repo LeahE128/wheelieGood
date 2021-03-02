@@ -85,6 +85,10 @@ engine.execute(ins)
 
 # Getting dyanamic bike data
 def get_station(obj):
+    try:
+        x = datetime.datetime.fromtimestamp(int(obj['last_update'] / 1e3))
+    except:
+        x = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     return {'number': obj['number'],
             'available_bike_stands': obj['available_bike_stands'],
             'available_bikes': obj['available_bikes'],
