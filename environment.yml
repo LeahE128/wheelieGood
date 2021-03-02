@@ -1,0 +1,19 @@
+name: wheelieGd
+channels:
+  - anaconda
+  - defaults
+dependencies:
+  - pip:
+    - datetime==4.3
+    - ipython==7.21.0
+    - ipython-genutils==0.2.0
+    - mysql==0.0.2
+    - mysql-connector==2.2.9
+    - mysqlclient==2.0.3
+    - parso==0.8.1
+    - prompt-toolkit==3.0.16
+    - pygments==2.8.0
+    - pytz==2021.1
+    - sqlalchemy==1.3.23
+    - zope-interface==5.2.0
+prefix: C:\Users\drsho\anaconda3\envs\wheelieGood
