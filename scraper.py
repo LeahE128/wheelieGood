@@ -92,7 +92,7 @@ def get_station(obj):
     return {'number': obj['number'],
             'available_bike_stands': obj['available_bike_stands'],
             'available_bikes': obj['available_bikes'],
-            'last_update': datetime.datetime.fromtimestamp(int(obj['last_update'] / 1e3))}
+            'last_update': x}
 
 
 # Getting weather data
