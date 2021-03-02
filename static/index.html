@@ -9,8 +9,9 @@
 <script>
 
     fetch("/bikes").then(response => {
-    var data = response.data();
-    console.log("data: ", data);
+        return response.json();
+    }).then(data => {
+        console.log("data: ", data);
     }).catch(err => {
     console.log("OOPS", err);
     })
