@@ -135,7 +135,10 @@ while True:
         weather_request = requests.get(config.WEATHER_INFO,
                                        params={"appid": config.WAPIKEY, "id": config.WNAME})
 
-        weather_insert = list(map(get_weather, weather_request.json()))
+        weather_data = list(map(get_weather, weather_request.json()))
+        for i in range(len(weather_data)):
+            weather_insert = weather_data[i]
+
         engine.execute(weather.insert(), weather_insert)
 
         dynamic = list(map(get_station, stations_request.json()))
