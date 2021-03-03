@@ -61,7 +61,8 @@ Column('sys_sunrise', DateTime),
 Column('sys_sunset', DateTime),
 Column('city_id', Integer),
 Column('city_name', String(128)),
-Column('cod', Integer)
+Column('cod', Integer),
+Column('Current Time', DateTime)
 )
 
 meta.create_all(engine)
@@ -86,13 +87,13 @@ engine.execute(ins)
 # Getting dyanamic bike data
 def get_station(obj):
     try:
-        x = datetime.datetime.fromtimestamp(int(obj['last_update'] / 1e3))
+        weather_datetime = datetime.datetime.fromtimestamp(int(obj['last_update'] / 1e3))
     except:
-        x = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+        weather_datetime = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     return {'number': obj['number'],
             'available_bike_stands': obj['available_bike_stands'],
             'available_bikes': obj['available_bikes'],
-            'last_update': x}
+            'last_update': weather_datetime}
 
 
 # Getting weather data
@@ -121,6 +122,7 @@ def get_weather(weather):
     weather['city_id'] = weather['id']
     weather['city_name'] = weather['name']
     weather['cod'] = weather['cod']
+    weather['Current Time'] = datetime.datetime.now()
 
     return weather
 
