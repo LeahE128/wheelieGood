@@ -2,14 +2,14 @@ from flask import Flask, render_template
 from jinja2 import Template
 from sqlalchemy import create_engine
 import config
-import pandas as pd
+from pandas import pandas as pd
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def hello():
-    return app.send_static_file("index.html")
+    return render_template("index.html")
 
 
 @app.route("/about")
@@ -25,6 +25,7 @@ def dynamic_bikes():
     df = pd.read_sql("SELECT * from dynamic_bikes", engine)
     weather_data = df.head(3).to_json(orient="records")
     return weather_data
+
 
 
 @app.route("/contact")
