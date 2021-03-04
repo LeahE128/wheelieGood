@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="UTF-8">
+    <title>HELLO THERE</title>
+    <meta name = "author" content = "wheelieGood">
+</head>
+
+<link href="{{ url_for('static', filename ='style.css') }}" rel = "stylesheet" type = "text/css">
+{#<script type="text/javascript" src="{{  url_for('static', filename='app.js') }}"><</script>#}
+
+
+<h1>hello</h1>
+<div id = "map">map</div>
+
+<script>
+
+    let map;
+
+    function initMap() {
+        fetch("/bikes").then(response=> {
+            return response.json();
+        }).then(data => {
+            console.log("data:", data)
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: {lat: 53.349804, lng: -6.260310},
+                zoom:12,
+            });
+        }).catch(err => {
+            console.log("OOPS!", err);
+        })
+    }
+</script>
+
+<script src = "http://maps.googleleapis.com/maps/api/js?key=" async></script>
+
+
+</body>
+</html>
