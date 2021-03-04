@@ -135,12 +135,15 @@ while True:
         weather_request = requests.get(config.WEATHER_INFO,
                                        params={"appid": config.WAPIKEY, "id": config.WNAME})
 
+        # mapping weather data
         weather_data = list(map(get_weather, weather_request.json()))
+        # remove duplicates from weather data list
+        weather_insert = ()
         for i in range(len(weather_data)):
             weather_insert = weather_data[i]
-
         engine.execute(weather.insert(), weather_insert)
 
+        # maps bike data
         dynamic = list(map(get_station, stations_request.json()))
         ins = dynamic_bikes.insert().values(dynamic)
         engine.execute(ins)
