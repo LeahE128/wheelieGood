@@ -27,13 +27,21 @@
                 center: {lat: 53.349804, lng: -6.260310},
                 zoom:12,
             });
+            
+//          Addition of google markers
+            data.forEach(bikes => {
+                new google.maps.Marker({
+                    position: { lat: bikes.pos_lat, lng: bikes.pos_lng},
+                    map: map,
+                });
+            });
         }).catch(err => {
             console.log("OOPS!", err);
         })
     }
 </script>
 
-<script src = "https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async></script>
+<script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC99AyuHEKOKE1VeDkJuM5MKF-RdTIXEAU&callback=initMap" async></script>
 
 
 </body>

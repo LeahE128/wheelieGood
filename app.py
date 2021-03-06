@@ -22,9 +22,10 @@ def dynamic_bikes():
     # Request Data from API
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
-    df = pd.read_sql("SELECT * from dynamic_bikes", engine)
-    weather_data = df.head(3).to_json(orient="records")
-    return weather_data
+    # Using static bike table
+    df = pd.read_sql("SELECT * from static_bikes", engine)
+    bike_data = df.to_json(orient="records")
+    return bike_data
 
 
 
