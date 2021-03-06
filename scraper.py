@@ -7,7 +7,6 @@ import datetime
 import mysql.connector
 import config
 import time
-import dbscrape
 
 stations_request = requests.get(config.STATIONS,
                                         params={"apiKey": config.APIKEY, "contract": config.NAME})
