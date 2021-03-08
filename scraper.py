@@ -41,6 +41,8 @@ Column('last_update', DateTime)
 # Creating weather table and columns
 weather = Table(
 'weather', meta,
+Column('coord_lon', Float),
+Column('coord_lat', Float),
 Column('weather_main', String(128)),
 Column('weather_description', String(128)),
 Column('weather_icon', String(128)),
@@ -64,6 +66,7 @@ Column('city_name', String(128)),
 Column('cod', Integer),
 Column('Current Time', DateTime)
 )
+
 
 meta.create_all(engine)
 
@@ -103,6 +106,8 @@ def get_weather(weather):
     weather['weather_id'] = weather['weather'][0]['id']
     weather['weather_main'] = weather['weather'][0]['main']
     weather['weather_description'] = weather['weather'][0]['description']
+    weather['coord_lon'] = weather['coord']['lon']
+    weather['coord_lon'] = weather['coord']['lat']
     weather['weather_icon'] = weather['weather'][0]['icon']
     weather['main_temp'] = weather['main']['temp']
     weather['main_pressure'] = weather['main']['pressure']
