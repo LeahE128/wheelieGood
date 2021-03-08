@@ -107,7 +107,7 @@ def get_weather(weather):
     weather['weather_main'] = weather['weather'][0]['main']
     weather['weather_description'] = weather['weather'][0]['description']
     weather['coord_lon'] = weather['coord']['lon']
-    weather['coord_lon'] = weather['coord']['lat']
+    weather['coord_lat'] = weather['coord']['lat']
     weather['weather_icon'] = weather['weather'][0]['icon']
     weather['main_temp'] = weather['main']['temp']
     weather['main_pressure'] = weather['main']['pressure']
