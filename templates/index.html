@@ -7,10 +7,18 @@
 </head>
 
 <link href="{{ url_for('static', filename ='style.css') }}" rel = "stylesheet" type = "text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 {#<script type="text/javascript" src="{{  url_for('static', filename='app.js') }}"><</script>#}
 
 
 <h1>hello</h1>
+<div id = "city"></div>
+<div id = "weather_date"></div>
+<div id = "temp"></div>
+<div id = "weather_description"></div>
+<div id = "weather_icon"><img id="wicon" src="" alt="Weather icon"></div>
+
+
 <div id = "map">map</div>
 
 <script>
@@ -27,7 +35,9 @@
                 center: {lat: 53.349804, lng: -6.260310},
                 zoom:12,
             });
-            
+
+
+
 //          Addition of google markers
             data.forEach(bikes => {
                 const marker = new google.maps.Marker({
@@ -45,6 +55,27 @@
             console.log("OOPS!", err);
         })
     }
+
+    function displayWeather() {
+        fetch("/weather").then(response => {
+            return response.json();
+        }).then(data => {
+            console.log("data:", data)
+            const last_item = data.length - 1;
+            const weather_main = data[last_item].weather_main;
+            const weather_icon = data[last_item].weather_icon;
+            const weather_city = data[last_item].city_name;
+            const weather_temp = data[last_item].main_temp - 273.53;
+            var weather_temp_int = parseInt(weather_temp);
+            var iconurl = "http://openweathermap.org/img/w/" + weather_icon + ".png";
+            city.innerHTML = weather_city;
+            temp.innerHTML = weather_temp_int + "℃";
+            weather_description.innerHTML = weather_main;
+            $('#wicon').attr('src', iconurl);
+        });
+    }
+    displayWeather();
+
 </script>
 
 <script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC99AyuHEKOKE1VeDkJuM5MKF-RdTIXEAU&callback=initMap" async></script>
@@ -52,3 +83,5 @@
 
 </body>
 </html>
+
+
