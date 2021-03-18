@@ -27,7 +27,15 @@ def dynamic_bikes():
     bike_data = df.to_json(orient="records")
     return bike_data
 
-
+@app.route("/weather")
+def dynamic_weather():
+    # Request Data from API
+    engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
+                           echo=True)
+    # Using static bike table
+    df = pd.read_sql("SELECT * from weather", engine)
+    weather_data = df.to_json(orient="records")
+    return weather_data
 
 @app.route("/contact")
 def contact():
@@ -37,3 +45,4 @@ def contact():
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+
