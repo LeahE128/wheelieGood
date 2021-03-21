@@ -17,6 +17,16 @@ def about():
     return app.send_static_file("about.html")
 
 
+@app.route("/currentBikes")
+def current_bikes():
+    # Request Data from API
+    engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
+                           echo=True)
+    # Using static bike table
+    df = pd.read_sql("SELECT * from dynamic_bikes", engine)
+    dynamic_bike_data = df.to_json(orient="records")
+    return dynamic_bike_data
+
 @app.route("/bikes")
 def dynamic_bikes():
     # Request Data from API

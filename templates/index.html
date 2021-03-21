@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>HELLO THERE</title>
     <meta name = "author" content = "wheelieGood">
+    <link href="{{ url_for('static', filename ='styles.css') }}" rel = "stylesheet" type = "text/css">
 </head>
 
-<link href="{{ url_for('static', filename ='style.css') }}" rel = "stylesheet" type = "text/css">
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 {#<script type="text/javascript" src="{{  url_for('static', filename='app.js') }}"><</script>#}
 
@@ -20,8 +21,33 @@
 
 
 <div id = "map">map</div>
+<div id = "bikeTable">bikeTable</div>
+
 
 <script>
+
+    function bikeData(stationName, stationNumber) {
+        fetch("/currentBikes").then(response=> {
+            return response.json();
+        }).then(currentData => {
+            console.log("currentData:", currentData)});
+
+
+        // if (stationNumber in data) {
+        //      var tableOut = "<table>";
+        //         tableOut += "<tr>" +
+        //             "<th>Number</th>" +
+        //             "<th>Name</th></tr>";
+        //         for (var x in bikes) {
+        //             var title = bikes[x].num;
+        //             var type = bikes[x].type;
+        //             // forming table contents
+        //             tableOut += "<tr><td>" +
+        //                 bikes.number + "</td><td>" +
+        //                 stationName + "</td></tr>"
+        //}
+        document.getElementById("bikeTable").innerHTML = stationNumber + " " + stationName;
+    }
 
     let map;
 
@@ -36,8 +62,6 @@
                 zoom:12,
             });
 
-
-
 //          Addition of google markers
             data.forEach(bikes => {
                 const marker = new google.maps.Marker({
@@ -46,9 +70,10 @@
                 });
                 marker.addListener("click", () => {
                     const infowindow = new google.maps.InfoWindow({
-                        content: bikes.name,
+                        content: bikes.name && bikes.number
                     });
                     infowindow.open(map, marker);
+                    bikeData(bikes.name, bikes.number);
                 });
             });
         }).catch(err => {
