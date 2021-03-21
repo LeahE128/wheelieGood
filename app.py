@@ -23,7 +23,8 @@ def current_bikes():
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     # Using static bike table
-    df = pd.read_sql("SELECT * from dynamic_bikes", engine)
+    df = pd.read_sql('SELECT number, available_bike_stands, available_bikes, '
+                     'MAX(last_update) FROM wheelieGood.dynamic_bikes dynB GROUP BY number;', engine)
     dynamic_bike_data = df.to_json(orient="records")
     return dynamic_bike_data
 

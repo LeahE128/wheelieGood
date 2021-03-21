@@ -4,15 +4,15 @@
 
 #map {
     display: inline-block;
-    height: 100%;
-    width: 60%;
+    height: 70%;
+    width: 55%;
     float: left;
     padding-left: 2%;
 }
 
 #bikeTable {
     display: inline-block;
-    width: 35%;
+    width: 40%;
     float: right;
     padding-right: 2%;
 }
@@ -21,4 +21,16 @@ html,body {
     height: 100%;
     margin: 0;
     padding: 0;
+}
+
+thead {
+  float: left;
+}
+
+thead th {
+  display: block;
+}
+
+tbody {
+  float: right;
 }
