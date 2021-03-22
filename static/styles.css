@@ -4,8 +4,8 @@
 
 #map {
     display: inline-block;
-    height: 70%;
-    width: 55%;
+    height: 40%;
+    width: 45%;
     float: left;
     padding-left: 2%;
 }
@@ -15,6 +15,17 @@
     width: 40%;
     float: right;
     padding-right: 2%;
+    border-collapse: collapse;
+    margin: 25px;
+    font-size: 0.9em;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 25px;
+    font-size: 0.9em;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
 }
 
 html,body {
@@ -24,13 +35,38 @@ html,body {
 }
 
 thead {
-  float: left;
-}
-
-thead th {
-  display: block;
+    text-align: left;
+    float: left;
 }
 
 tbody {
-  float: right;
+    float: right;
+}
+
+thead tr{
+    background-color: #009879;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+tbody tr {
+    background-color: azure;
+    border-bottom: 1px solid black;
+}
+
+tbody td {
+    text-align: center;
+    padding: 12px 15px;
+}
+
+thead th {
+    padding: 12px 15px;
+    display: block;
+    border-bottom: 1px solid black;
+}
+
+
+tbody tr:nth-of-type(even){
+    background-color: aliceblue;
 }
