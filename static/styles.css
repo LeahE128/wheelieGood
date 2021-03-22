@@ -2,12 +2,75 @@
     width: 100%;
 }
 
+html,
+body {
+  height:100%;
+}
+
+html {
+    background: linear-gradient(#191970 25%, #ADD8E6) no-repeat center fixed;
+    background-size: cover;
+}
+
+header {
+	height: 60px;
+    padding-top: 50px;
+    font-family: sans-serif;
+
+}
+
+header h1 {
+	float: left;
+    display: inline-block;
+	margin-left: 2%;
+    border: 0;
+    color: #87cefa;
+    font-size: 30px;
+}
+
+
+header nav {
+    color:#FFFFFF;
+    float: right;
+    text-decoration: none;
+
+
+}
+
+header nav ul li {
+	float: left;
+	display: inline-block;
+    text-decoration: none;
+
+}
+header nav ul li a:hover {
+    color: #87cefa;
+}
+
+header nav ul li a {
+	color: #FFFFFF;
+	text-transform: uppercase;
+	font-weight: bold;
+    font-size: 25px;
+	display: inline-block;
+	margin-right: 20px;
+    border-bottom: none;
+    text-decoration-line: none;
+}
+
+header .current a {
+    color:#87cefa;
+}
+
+
 #map {
     display: inline-block;
     height: 100%;
-    width: 60%;
+    width: 40%;
     float: left;
-    padding-left: 2%;
+    padding-left: 8%;
+    padding-right: 10%;
+    margin-left: 2%;
 }
 
 #bikeTable {
@@ -15,10 +78,39 @@
     width: 35%;
     float: right;
     padding-right: 2%;
+    font-family: sans-serif;
+    color: #FFFFFF;
 }
 
-html,body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+#city {
+    padding-left: 25%;
+    padding-right: 10%;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+#temp {
+    padding-left: 25%;
+    padding-right: 10%;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+#weather_description {
+    padding-left: 25%;
+    padding-right: 10%;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+#weather_icon img {
+    padding-left: 25%;
+    padding-right: 10%;
+    font-family: sans-serif;
+    height:4%;
+    width: 4%;
+    color: #FFFFFF;
 }
