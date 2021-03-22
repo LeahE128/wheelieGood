@@ -11,10 +11,23 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 {#<script type="text/javascript" src="{{  url_for('static', filename='app.js') }}"><</script>#}
 
+<div class="nav_bar">
+        <header>
+            <h1>Wheelie Good - Dublin Bikes</h1>
+		      <nav>
+			     <ul>
+				    <li class="current"><a href="/">Home</a></li>
+				    <li ><a href="">Plan your Journey</a></li>
+				    <li><a href="about.html">About Us</a></li>
+				    <li><a href="contact.html">Contact Us</a></li>
+			     </ul>
+		      </nav>
+            </header>
+        </div>
 
-<h1>hello</h1>
+
+
 <div id = "city"></div>
-<div id = "weather_date"></div>
 <div id = "temp"></div>
 <div id = "weather_description"></div>
 <div id = "weather_icon"><img id="wicon" src="" alt="Weather icon"></div>
@@ -25,6 +38,8 @@
 
 
 <script>
+
+
 
     function bikeData(stationName, stationNumber) {
         fetch("/currentBikes").then(response=> {
@@ -93,10 +108,11 @@
             const weather_temp = data[last_item].main_temp - 273.53;
             var weather_temp_int = parseInt(weather_temp);
             var iconurl = "http://openweathermap.org/img/w/" + weather_icon + ".png";
-            city.innerHTML = weather_city;
-            temp.innerHTML = weather_temp_int + "℃";
-            weather_description.innerHTML = weather_main;
+            document.getElementById('city').innerHTML = weather_city;
+            document.getElementById('temp').innerHTML = weather_temp_int+ '℃';
+            document.getElementById('weather_description').innerHTML = weather_main;
             $('#wicon').attr('src', iconurl);
+
         });
     }
     displayWeather();
@@ -108,5 +124,6 @@
 
 </body>
 </html>
+
 
 
