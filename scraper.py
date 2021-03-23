@@ -8,6 +8,7 @@ import mysql.connector
 import config
 import time
 
+
 stations_request = requests.get(config.STATIONS,
                                         params={"apiKey": config.APIKEY, "contract": config.NAME})
 
@@ -40,6 +41,8 @@ Column('last_update', DateTime)
 # Creating weather table and columns
 weather = Table(
 'weather', meta,
+Column('coord_lon', Float),
+Column('coord_lat', Float),
 Column('weather_main', String(128)),
 Column('weather_description', String(128)),
 Column('weather_icon', String(128)),
@@ -60,8 +63,10 @@ Column('sys_sunrise', DateTime),
 Column('sys_sunset', DateTime),
 Column('city_id', Integer),
 Column('city_name', String(128)),
-Column('cod', Integer)
+Column('cod', Integer),
+Column('Current Time', DateTime)
 )
+
 
 meta.create_all(engine)
 
@@ -84,10 +89,14 @@ engine.execute(ins)
 
 # Getting dyanamic bike data
 def get_station(obj):
+    try:
+        weather_datetime = datetime.datetime.fromtimestamp(int(obj['last_update'] / 1e3))
+    except:
+        weather_datetime = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     return {'number': obj['number'],
             'available_bike_stands': obj['available_bike_stands'],
             'available_bikes': obj['available_bikes'],
-            'last_update': datetime.datetime.fromtimestamp(int(obj['last_update'] / 1e3))}
+            'last_update': weather_datetime}
 
 
 # Getting weather data
@@ -97,6 +106,8 @@ def get_weather(weather):
     weather['weather_id'] = weather['weather'][0]['id']
     weather['weather_main'] = weather['weather'][0]['main']
     weather['weather_description'] = weather['weather'][0]['description']
+    weather['coord_lon'] = weather['coord']['lon']
+    weather['coord_lat'] = weather['coord']['lat']
     weather['weather_icon'] = weather['weather'][0]['icon']
     weather['main_temp'] = weather['main']['temp']
     weather['main_pressure'] = weather['main']['pressure']
@@ -116,6 +127,7 @@ def get_weather(weather):
     weather['city_id'] = weather['id']
     weather['city_name'] = weather['name']
     weather['cod'] = weather['cod']
+    weather['Current Time'] = datetime.datetime.now()
 
     return weather
 
@@ -128,9 +140,15 @@ while True:
         weather_request = requests.get(config.WEATHER_INFO,
                                        params={"appid": config.WAPIKEY, "id": config.WNAME})
 
-        weather_insert = list(map(get_weather, weather_request.json()))
+        # mapping weather data
+        weather_data = list(map(get_weather, weather_request.json()))
+        # remove duplicates from weather data list
+        weather_insert = ()
+        for i in range(len(weather_data)):
+            weather_insert = weather_data[i]
         engine.execute(weather.insert(), weather_insert)
 
+        # maps bike data
         dynamic = list(map(get_station, stations_request.json()))
         ins = dynamic_bikes.insert().values(dynamic)
         engine.execute(ins)
