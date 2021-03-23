@@ -39,31 +39,6 @@
 
 <script>
 
-
-
-    function bikeData(stationName, stationNumber) {
-        fetch("/currentBikes").then(response=> {
-            return response.json();
-        }).then(currentData => {
-            console.log("currentData:", currentData)});
-
-
-        // if (stationNumber in data) {
-        //      var tableOut = "<table>";
-        //         tableOut += "<tr>" +
-        //             "<th>Number</th>" +
-        //             "<th>Name</th></tr>";
-        //         for (var x in bikes) {
-        //             var title = bikes[x].num;
-        //             var type = bikes[x].type;
-        //             // forming table contents
-        //             tableOut += "<tr><td>" +
-        //                 bikes.number + "</td><td>" +
-        //                 stationName + "</td></tr>"
-        //}
-        document.getElementById("bikeTable").innerHTML = stationNumber + " " + stationName;
-    }
-
     let map;
 
     function initMap() {
@@ -85,7 +60,7 @@
                 });
                 marker.addListener("click", () => {
                     const infowindow = new google.maps.InfoWindow({
-                        content: bikes.name && bikes.number
+                        content: bikes.name
                     });
                     infowindow.open(map, marker);
                     bikeData(bikes.name, bikes.number);
@@ -95,6 +70,45 @@
             console.log("OOPS!", err);
         })
     }
+
+    function bikeData(stationName, stationNumber) {
+
+        fetch("/currentBikes").then(response => {
+            return response.json();
+        }).then(currentData => {
+            console.log("currentData:", currentData)
+            for (let key in currentData) {
+                let standNumber = currentData[key].number;
+                if (standNumber == stationNumber) {
+                    console.log("stand number is" + standNumber + "station number is " + stationNumber);
+
+                    let tableOut = "<table>";
+                    tableOut += "<thead>" + "<tr>" +
+                        "<th>Number</th>" +
+                        "<th>Name</th>" +
+                        "<th>Available Bike Stands</th>" +
+                        "<th>Available Bikes</th></tr>" +
+                        "</thead>";
+
+                    let number = currentData[key].number;
+                    let availableBikes = currentData[key].available_bikes;
+                    let availableBikeStands = currentData[key].available_bike_stands;
+
+
+                    tableOut += "<tr><td>" +
+                    number + "</td></tr>" + "<tr><td>" +
+                    stationName + "</td></tr>" + "<tr><td>" +
+                    availableBikeStands + "</td></tr>" + "<tr><td>" +
+                    availableBikes + "</td></tr>";
+                    tableOut += "</table>";
+
+                    document.getElementById("bikeTable").innerHTML = tableOut;
+                }
+            }
+        })
+    }
+
+
 //display weather info
     function displayWeather() {
         fetch("/weather").then(response => {

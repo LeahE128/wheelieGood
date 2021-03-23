@@ -3,6 +3,7 @@ from jinja2 import Template
 from sqlalchemy import create_engine
 import config
 from pandas import pandas as pd
+from functools import lru_cache
 
 app = Flask(__name__)
 
@@ -23,9 +24,11 @@ def current_bikes():
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     # Using static bike table
-    df = pd.read_sql("SELECT * from dynamic_bikes", engine)
+    df = pd.read_sql('SELECT number, available_bike_stands, available_bikes, '
+                     'MAX(last_update) FROM wheelieGood.dynamic_bikes dynB GROUP BY number;', engine)
     dynamic_bike_data = df.to_json(orient="records")
     return dynamic_bike_data
+
 
 @app.route("/bikes")
 def dynamic_bikes():
@@ -37,7 +40,9 @@ def dynamic_bikes():
     bike_data = df.to_json(orient="records")
     return bike_data
 
+
 @app.route("/weather")
+@lru_cache()
 def dynamic_weather():
     # Request Data from API
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
@@ -46,6 +51,7 @@ def dynamic_weather():
     df = pd.read_sql("SELECT * from weather", engine)
     weather_data = df.to_json(orient="records")
     return weather_data
+
 
 @app.route("/contact")
 def contact():
