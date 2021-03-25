@@ -39,14 +39,14 @@
 
 <script>
 
+    let dynamicData;
     let map;
 
     function initMap() {
+        getDynamicBikes();
         fetch("/bikes").then(response=> {
             return response.json();
         }).then(data => {
-            console.log("data:", data)
-
             map = new google.maps.Map(document.getElementById("map"), {
                 center: {lat: 53.349804, lng: -6.260310},
                 zoom:12,
@@ -60,10 +60,13 @@
                 });
                 marker.addListener("click", () => {
                     const infowindow = new google.maps.InfoWindow({
-                        content: bikes.name
+                        content: bikes.name + "<br>" +
+                            "Station Number: " + bikes.number + "<br>" +
+                            "Available Bikes: " + availability(bikes.number, dynamicData) + "<br>" +
+                            "Available Stands: " + availableStands(bikes.number, dynamicData)
                     });
                     infowindow.open(map, marker);
-                    bikeData(bikes.name, bikes.number);
+                    bikeTable(dynamicData, bikes.number, bikes.name);
                 });
             });
         }).catch(err => {
@@ -71,14 +74,28 @@
         })
     }
 
-    function bikeData(stationName, stationNumber) {
+    function availability(number, dynamicBikes) {
+        for (let key in dynamicBikes) {
+            let stationNumber = dynamicBikes[key].number;
+            if (number == stationNumber) {
+                return dynamicBikes[key].available_bikes;
+            }
+        }
+    }
 
-        fetch("/currentBikes").then(response => {
-            return response.json();
-        }).then(currentData => {
-            console.log("currentData:", currentData)
-            for (let key in currentData) {
-                let standNumber = currentData[key].number;
+    function availableStands(number, dynamicBikes) {
+        for (let key in dynamicBikes) {
+            let stationNumber = dynamicBikes[key].number;
+            if (number == stationNumber) {
+                return dynamicBikes[key].available_bike_stands;
+            }
+        }
+    }
+
+        function bikeTable(dynamicBikesJson, stationNumber, stationName) {
+            //console.log(dynamicBikesJson)
+            for (let key in dynamicBikesJson) {
+                let standNumber = dynamicBikesJson[key].number;
                 if (standNumber == stationNumber) {
                     console.log("stand number is" + standNumber + "station number is " + stationNumber);
 
@@ -90,46 +107,55 @@
                         "<th>Available Bikes</th></tr>" +
                         "</thead>";
 
-                    let number = currentData[key].number;
-                    let availableBikes = currentData[key].available_bikes;
-                    let availableBikeStands = currentData[key].available_bike_stands;
+                    let number = dynamicBikesJson[key].number;
+                    let availableBikes = dynamicBikesJson[key].available_bikes;
+                    let availableBikeStands = dynamicBikesJson[key].available_bike_stands;
 
 
                     tableOut += "<tr><td>" +
-                    number + "</td></tr>" + "<tr><td>" +
-                    stationName + "</td></tr>" + "<tr><td>" +
-                    availableBikeStands + "</td></tr>" + "<tr><td>" +
-                    availableBikes + "</td></tr>";
+                        number + "</td></tr>" + "<tr><td>" +
+                        stationName + "</td></tr>" + "<tr><td>" +
+                        availableBikeStands + "</td></tr>" + "<tr><td>" +
+                        availableBikes + "</td></tr>";
                     tableOut += "</table>";
 
                     document.getElementById("bikeTable").innerHTML = tableOut;
                 }
             }
-        })
-    }
+        }
+    
+        function getDynamicBikes() {
+            fetch("/currentBikes").then(response => {
+                return response.json();
+            }).then(data => {
+                dynamicData = data;
+            })
+        }
+
 
 
 //display weather info
-    function displayWeather() {
-        fetch("/weather").then(response => {
-            return response.json();
-        }).then(data => {
-            console.log("data:", data)
-            const last_item = data.length - 1;
-            const weather_main = data[last_item].weather_main;
-            const weather_icon = data[last_item].weather_icon;
-            const weather_city = data[last_item].city_name;
-            const weather_temp = data[last_item].main_temp - 273.53;
-            var weather_temp_int = parseInt(weather_temp);
-            var iconurl = "http://openweathermap.org/img/w/" + weather_icon + ".png";
-            document.getElementById('city').innerHTML = weather_city;
-            document.getElementById('temp').innerHTML = weather_temp_int+ '℃';
-            document.getElementById('weather_description').innerHTML = weather_main;
-            $('#wicon').attr('src', iconurl);
+        function displayWeather() {
+            fetch("/weather").then(response => {
+                return response.json();
+            }).then(data => {
+                const last_item = data.length - 1;
+                const weather_main = data[last_item].weather_main;
+                const weather_icon = data[last_item].weather_icon;
+                const weather_city = data[last_item].city_name;
+                const weather_temp = data[last_item].main_temp - 273.53;
+                var weather_temp_int = parseInt(weather_temp);
+                var iconurl = "http://openweathermap.org/img/w/" + weather_icon + ".png";
+                document.getElementById('city').innerHTML = weather_city;
+                document.getElementById('temp').innerHTML = weather_temp_int + '℃';
+                document.getElementById('weather_description').innerHTML = weather_main;
+                $('#wicon').attr('src', iconurl);
 
-        });
-    }
-    displayWeather();
+            });
+        }
+
+        displayWeather();
+
 
 </script>
 
