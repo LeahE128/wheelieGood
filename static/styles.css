@@ -16,7 +16,6 @@ header {
 	height: 60px;
     padding-top: 50px;
     font-family: sans-serif;
-
 }
 
 header h1 {
@@ -33,16 +32,14 @@ header nav {
     color:#FFFFFF;
     float: right;
     text-decoration: none;
-
-
 }
 
 header nav ul li {
 	float: left;
 	display: inline-block;
     text-decoration: none;
-
 }
+
 header nav ul li a:hover {
     color: #87cefa;
 }
@@ -75,17 +72,17 @@ header .current a {
 
 #bikeTable {
     display: inline-block;
-    width: 35%;
+    width: 30%;
     float: right;
     padding-right: 2%;
     border-collapse: collapse;
-    margin: 25px;
+    margin: 10px;
     font-size: 0.9em;
 }
 
 table {
     border-collapse: collapse;
-    margin: 25px;
+    margin: 10px;
     font-size: 0.9em;
     border-radius: 5px 5px 0 0;
     overflow: hidden;
