@@ -52,6 +52,22 @@ def dynamic_weather():
     weather_data = df.to_json(orient="records")
     return weather_data
 
+@app.route("/occupancy/<int:station_id>")
+def get_occupancy(station_id):
+    engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
+                           echo=True)
+    sql = f"""
+    SELECT number, last_update, available_bike_stands, available_bikes FROM  wheelieGood.dynamic_bikes
+    WHERE number = {station_id}
+    GROUP BY number, day(last_update)
+    order by number, last_update ASC;
+    """
+
+    df = pd.read_sql_query(sql, engine)
+    res_df = df.set_index('last_update').resample('1d').mean()
+    res_df['last_update'] = res_df.index
+    return res_df.to_json(orient='records')
+
 
 @app.route("/contact")
 def contact():
