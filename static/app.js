@@ -3,7 +3,7 @@ let map;
 
 function initMap() {
     getDynamicBikes();
-    fetch("/bikes").then(response=> {
+    fetch("/staticBikes").then(response=> {
         return response.json();
     }).then(data => {
         map = new google.maps.Map(document.getElementById("map"), {

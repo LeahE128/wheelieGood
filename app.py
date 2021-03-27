@@ -30,13 +30,13 @@ def current_bikes():
     return dynamic_bike_data
 
 
-@app.route("/bikes")
-def dynamic_bikes():
+@app.route("/staticBikes")
+def static_bikes():
     # Request Data from API
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     # Using static bike table
-    df = pd.read_sql("SELECT * from static_bikes", engine)
+    df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes;", engine)
     bike_data = df.to_json(orient="records")
     return bike_data
 
@@ -51,6 +51,7 @@ def dynamic_weather():
     df = pd.read_sql("SELECT * from weather", engine)
     weather_data = df.to_json(orient="records")
     return weather_data
+
 
 @app.route("/occupancy/<int:station_id>")
 def get_occupancy(station_id):
