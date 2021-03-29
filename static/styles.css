@@ -16,7 +16,6 @@ header {
 	height: 60px;
     padding-top: 50px;
     font-family: sans-serif;
-
 }
 
 header h1 {
@@ -33,16 +32,14 @@ header nav {
     color:#FFFFFF;
     float: right;
     text-decoration: none;
-
-
 }
 
 header nav ul li {
 	float: left;
 	display: inline-block;
     text-decoration: none;
-
 }
+
 header nav ul li a:hover {
     color: #87cefa;
 }
@@ -65,7 +62,7 @@ header .current a {
 
 #map {
     display: inline-block;
-    height: 100%;
+    height: 40%;
     width: 40%;
     float: left;
     padding-left: 8%;
@@ -75,11 +72,20 @@ header .current a {
 
 #bikeTable {
     display: inline-block;
-    width: 35%;
+    width: 30%;
     float: right;
     padding-right: 2%;
-    font-family: sans-serif;
-    color: #FFFFFF;
+    border-collapse: collapse;
+    margin: 10px;
+    font-size: 0.9em;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 10px;
+    font-size: 0.9em;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
 }
 
 #city {
@@ -114,3 +120,47 @@ header .current a {
     width: 4%;
     color: #FFFFFF;
 }
+
+thead {
+    text-align: left;
+    float: left;
+}
+
+tbody {
+    float: right;
+}
+
+thead tr{
+    background-color: #009879;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+tbody tr {
+    background-color: azure;
+    border-bottom: 1px solid black;
+}
+
+tbody td {
+    text-align: center;
+    padding: 12px 15px;
+}
+
+thead th {
+    padding: 12px 15px;
+    display: block;
+    border-bottom: 1px solid black;
+}
+
+
+tbody tr:nth-of-type(even){
+    background-color: aliceblue;
+}
+
+#stationSelDiv {
+     padding-left: 30%;
+    padding-right: 10%;
+    margin-left: 2%;
+}
+
