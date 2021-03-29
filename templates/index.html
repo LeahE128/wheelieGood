@@ -7,10 +7,7 @@
     <link href="{{ url_for('static', filename ='styles.css') }}" rel = "stylesheet" type = "text/css">
 </head>
 
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-{#<script type="text/javascript" src="{{  url_for('static', filename='app.js') }}"><</script>#}
-
+<body>
 <div class="nav_bar">
         <header>
             <h1>Wheelie Good - Dublin Bikes</h1>
@@ -25,105 +22,23 @@
             </header>
         </div>
 
-
-
 <div id = "city"></div>
 <div id = "temp"></div>
 <div id = "weather_description"></div>
 <div id = "weather_icon"><img id="wicon" src="" alt="Weather icon"></div>
+<div id="stationSelDiv"></div>
 
 
-<div id = "map">map</div>
-<div id = "bikeTable">bikeTable</div>
+<div id = "map">Loading map...</div>
+<div id = "bikeTable"></div>
 
-
-<script>
-
-
-
-    function bikeData(stationName, stationNumber) {
-        fetch("/currentBikes").then(response=> {
-            return response.json();
-        }).then(currentData => {
-            console.log("currentData:", currentData)});
-
-
-        // if (stationNumber in data) {
-        //      var tableOut = "<table>";
-        //         tableOut += "<tr>" +
-        //             "<th>Number</th>" +
-        //             "<th>Name</th></tr>";
-        //         for (var x in bikes) {
-        //             var title = bikes[x].num;
-        //             var type = bikes[x].type;
-        //             // forming table contents
-        //             tableOut += "<tr><td>" +
-        //                 bikes.number + "</td><td>" +
-        //                 stationName + "</td></tr>"
-        //}
-        document.getElementById("bikeTable").innerHTML = stationNumber + " " + stationName;
-    }
-
-    let map;
-
-    function initMap() {
-        fetch("/bikes").then(response=> {
-            return response.json();
-        }).then(data => {
-            console.log("data:", data)
-
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: {lat: 53.349804, lng: -6.260310},
-                zoom:12,
-            });
-
-//          Addition of google markers
-            data.forEach(bikes => {
-                const marker = new google.maps.Marker({
-                    position: { lat: bikes.pos_lat, lng: bikes.pos_lng},
-                    map: map,
-                });
-                marker.addListener("click", () => {
-                    const infowindow = new google.maps.InfoWindow({
-                        content: bikes.name && bikes.number
-                    });
-                    infowindow.open(map, marker);
-                    bikeData(bikes.name, bikes.number);
-                });
-            });
-        }).catch(err => {
-            console.log("OOPS!", err);
-        })
-    }
-//display weather info
-    function displayWeather() {
-        fetch("/weather").then(response => {
-            return response.json();
-        }).then(data => {
-            console.log("data:", data)
-            const last_item = data.length - 1;
-            const weather_main = data[last_item].weather_main;
-            const weather_icon = data[last_item].weather_icon;
-            const weather_city = data[last_item].city_name;
-            const weather_temp = data[last_item].main_temp - 273.53;
-            var weather_temp_int = parseInt(weather_temp);
-            var iconurl = "http://openweathermap.org/img/w/" + weather_icon + ".png";
-            document.getElementById('city').innerHTML = weather_city;
-            document.getElementById('temp').innerHTML = weather_temp_int+ '℃';
-            document.getElementById('weather_description').innerHTML = weather_main;
-            $('#wicon').attr('src', iconurl);
-
-        });
-    }
-    displayWeather();
-
-</script>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
 <script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC99AyuHEKOKE1VeDkJuM5MKF-RdTIXEAU&callback=initMap" async></script>
-
 
 </body>
 </html>
+
 
 
 
