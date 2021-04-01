@@ -19,6 +19,7 @@ def about():
 
 
 @app.route("/currentBikes")
+@lru_cache
 def current_bikes():
     # Request Data from API
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
@@ -54,6 +55,7 @@ def dynamic_weather():
 
 
 @app.route("/occupancy/<int:station_id>")
+@lru_cache
 def get_occupancy(station_id):
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
@@ -65,7 +67,7 @@ def get_occupancy(station_id):
     """
 
     df = pd.read_sql_query(sql, engine)
-    res_df = df.set_index('last_update').resample('1d').mean()
+    res_df = df.set_index('last_update').resample('D').mean()
     res_df['last_update'] = res_df.index
     return res_df.to_json(orient='records')
 

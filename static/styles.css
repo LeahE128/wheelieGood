@@ -70,6 +70,15 @@ header .current a {
     margin-left: 2%;
 }
 
+#chart{
+    height: 40%;
+    width: 50%;
+    margin-top: 1%;
+    float: left;
+    padding-left: 6%;
+    padding-right: 10%;
+}
+
 #bikeTable {
     display: inline-block;
     width: 30%;

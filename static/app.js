@@ -1,6 +1,11 @@
 let dynamicData;
 let map;
 
+function initCharts(){
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(initMap);
+}
+
 function initMap() {
     getDynamicBikes();
     fetch("/staticBikes").then(response=> {
@@ -26,11 +31,35 @@ function initMap() {
                 });
                 infowindow.open(map, marker);
                 bikeTable(dynamicData, bikes.number, bikes.name);
+                drawOccupancyWeekly(bikes.number);
             });
         });
     }).catch(err => {
         console.log("OOPS!", err);
     })
+}
+
+function drawOccupancyWeekly(bikes_number){
+//This is called when a user clicks on the marker
+    fetch("/occupancy/" + bikes_number).then(response => {
+        return response.json();
+    }).then(data => {
+//        console.log(data);
+
+        var options = {
+            title: "Bike Availability per day",
+        }
+        var chart = new google.visualization.ColumnChart(document.getElementById("chart"));
+        var chart_data = new google.visualization.DataTable();
+        chart_data.addColumn('datetime', "Date");
+        chart_data.addColumn('number', "Bike Availability");
+        data.forEach(v => {
+            chart_data.addRow([new Date(v.last_update), v.available_bikes]);
+        })
+        chart.draw(chart_data, options);
+
+    });
+
 }
 
 function availability(number, dynamicBikes) {
@@ -56,7 +85,6 @@ function availableStands(number, dynamicBikes) {
         for (let key in dynamicBikesJson) {
             let standNumber = dynamicBikesJson[key].number;
             if (standNumber == stationNumber) {
-                console.log("stand number is" + standNumber + "station number is " + stationNumber);
 
                 let tableOut = "<table>";
                 tableOut += "<thead>" + "<tr>" +
@@ -106,7 +134,7 @@ function availableStands(number, dynamicBikes) {
             document.getElementById('temp').innerHTML = weather_temp_int + '℃';
             document.getElementById('weather_description').innerHTML = weather_main;
             $('#wicon').attr('src', iconurl);
-
+            
         });
     }
 
