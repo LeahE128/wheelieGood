@@ -7,38 +7,77 @@ function initCharts(){
 }
 
 function initMap() {
+
     getDynamicBikes();
     fetch("/staticBikes").then(response=> {
         return response.json();
-    }).then(data => {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: {lat: 53.349804, lng: -6.260310},
-            zoom:12,
-        });
 
-//          Addition of google markers
-        data.forEach(bikes => {
-            const marker = new google.maps.Marker({
-                position: { lat: bikes.pos_lat, lng: bikes.pos_lng},
-                map: map,
+    }).then(data => {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: {lat: 53.349804, lng: -6.260310},
+        zoom:12,
+    });
+//    Adding circle to map
+    data.forEach(bikes => {
+        if(availability(bikes.number, dynamicData) > 5){
+            let stationCircleGr = new google.maps.Circle({
+                strokeColor: "#00ff00",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#00ff00",
+                fillOpacity: 0.35,
+                map,
+                center: { lat: bikes.pos_lat, lng: bikes.pos_lng },
+                radius: 55,
             });
-            marker.addListener("click", () => {
-                const infowindow = new google.maps.InfoWindow({
-                    content: bikes.name + "<br>" +
-                        "Station Number: " + bikes.number + "<br>" +
-                        "Available Bikes: " + availability(bikes.number, dynamicData) + "<br>" +
-                        "Available Stands: " + availableStands(bikes.number, dynamicData)
-                });
-                infowindow.open(map, marker);
-                bikeTable(dynamicData, bikes.number, bikes.name);
-                drawOccupancyWeekly(bikes.number);
+        } else if (availability(bikes.number, dynamicData) > 2){
+            let stationCircleOr = new google.maps.Circle({
+                strokeColor: "#FFA500",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FFA500",
+                fillOpacity: 0.35,
+                map,
+                center: { lat: bikes.pos_lat, lng: bikes.pos_lng },
+                radius: 55,
             });
+        } else{
+            let stationCircleRd = new google.maps.Circle({
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+                map,
+                center: { lat: bikes.pos_lat, lng: bikes.pos_lng },
+                radius: 55,
+            });
+        }          
+        // Addition of google markers
+        const marker = new google.maps.Marker({
+            position: { lat: bikes.pos_lat, lng: bikes.pos_lng},
+            map: map,
         });
+        marker.addListener("click", () => {
+            const infowindow = new google.maps.InfoWindow({
+                content: bikes.name + "<br>" +
+                    "Station Number: " + bikes.number + "<br>" +
+                    "Available Bikes: " + availability(bikes.number, dynamicData) + "<br>" +
+                    "Available Stands: " + availableStands(bikes.number, dynamicData)
+            });
+            infowindow.open(map, marker);
+            bikeTable(dynamicData, bikes.number, bikes.name);
+            drawOccupancyWeekly(bikes.number);
+        });
+    });
+        
     }).catch(err => {
         console.log("OOPS!", err);
     })
-}
+    }
 
+const chart_colors = ['#191970'];
+const background = '#ADD8E6';
 function drawOccupancyWeekly(bikes_number){
 //This is called when a user clicks on the marker
     fetch("/occupancy/" + bikes_number).then(response => {
@@ -47,8 +86,24 @@ function drawOccupancyWeekly(bikes_number){
 //        console.log(data);
 
         var options = {
-            title: "Bike Availability per day",
-        }
+
+                    title: 'Bike availability per day',
+                    height: 400,
+                    legend: {
+                        position: 'top',
+                        maxLines: 3
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'out'
+                    },
+                    colors: chart_colors,
+                    bar: {
+                        groupWidth: '75%'
+                    },
+                    isStacked: true,
+                    backgroundColor: background
+                };
         var chart = new google.visualization.ColumnChart(document.getElementById("chart"));
         var chart_data = new google.visualization.DataTable();
         chart_data.addColumn('datetime', "Date");
@@ -92,6 +147,7 @@ function availableStands(number, dynamicBikes) {
                     "<th>Name</th>" +
                     "<th>Available Bike Stands</th>" +
                     "<th>Available Bikes</th></tr>" +
+                    "</thead>";
                     "</thead>";
 
                 let number = dynamicBikesJson[key].number;
