@@ -7,17 +7,22 @@ function initCharts(){
 }
 
 function initMap() {
-
+//  Setting info window variable to null
+    var liveWindow = null;
+    
+//  Fetching the data
     getDynamicBikes();
     fetch("/staticBikes").then(response=> {
         return response.json();
 
     }).then(data => {
+//  Creation of map
     map = new google.maps.Map(document.getElementById("map"), {
         center: {lat: 53.349804, lng: -6.260310},
-        zoom:12,
-    });
-//    Adding circle to map
+        zoom:13,
+    });      
+        
+//  Adding circle to map
     data.forEach(bikes => {
         if(availability(bikes.number, dynamicData) > 5){
             let stationCircleGr = new google.maps.Circle({
@@ -52,24 +57,36 @@ function initMap() {
                 center: { lat: bikes.pos_lat, lng: bikes.pos_lng },
                 radius: 55,
             });
-        }          
+        }
+        
         // Addition of google markers
         const marker = new google.maps.Marker({
             position: { lat: bikes.pos_lat, lng: bikes.pos_lng},
             map: map,
         });
+        
         marker.addListener("click", () => {
+//          If it is open, close the infowindow
+            if(liveWindow !== null){
+                liveWindow.close();
+            }
+            
+//          Create the infowindow
             const infowindow = new google.maps.InfoWindow({
                 content: bikes.name + "<br>" +
                     "Station Number: " + bikes.number + "<br>" +
                     "Available Bikes: " + availability(bikes.number, dynamicData) + "<br>" +
                     "Available Stands: " + availableStands(bikes.number, dynamicData)
             });
+            
+//          Open the infowindow, assign the infowindow to liveWindow variable
             infowindow.open(map, marker);
+            liveWindow = infowindow;
+            
             bikeTable(dynamicData, bikes.number, bikes.name);
             drawOccupancyWeekly(bikes.number);
         });
-    });
+    });  
         
     }).catch(err => {
         console.log("OOPS!", err);
