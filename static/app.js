@@ -12,7 +12,7 @@ function initMap() {
     
 //  Fetching the data
     getDynamicBikes();
-    fetch("/staticBikes").then(response=> {
+    fetch("/allBikes").then(response=> {
         return response.json();
 
     }).then(data => {
@@ -24,7 +24,7 @@ function initMap() {
         
 //  Adding circle to map
     data.forEach(bikes => {
-        if(availability(bikes.number, dynamicData) > 5){
+        if( bikes.available_bikes > 5){
             let stationCircleGr = new google.maps.Circle({
                 strokeColor: "#00ff00",
                 strokeOpacity: 0.8,
@@ -35,7 +35,7 @@ function initMap() {
                 center: { lat: bikes.pos_lat, lng: bikes.pos_lng },
                 radius: 55,
             });
-        } else if (availability(bikes.number, dynamicData) > 2){
+        } else if (bikes.available_bikes) > 2){
             let stationCircleOr = new google.maps.Circle({
                 strokeColor: "#FFA500",
                 strokeOpacity: 0.8,
@@ -103,7 +103,6 @@ function drawOccupancyWeekly(bikes_number){
 //        console.log(data);
 
         var options = {
-
                     title: 'Bike availability per day',
                     height: 400,
                     legend: {
@@ -129,9 +128,7 @@ function drawOccupancyWeekly(bikes_number){
             chart_data.addRow([new Date(v.last_update), v.available_bikes]);
         })
         chart.draw(chart_data, options);
-
     });
-
 }
 
 function availability(number, dynamicBikes) {

@@ -41,15 +41,19 @@ def static_bikes():
     bike_data = df.to_json(orient="records")
     return bike_data
 
-# @app.route("/allBikes")
-# def all_bikes():
-#     # Request Data from API
-#     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
-#                            echo=True)
-#     # Joining both tables
-#     df = pd.read_sql("SELECT dynamic_bikes.number, available_bike_stands, available_bikes, last_update, name, address, pos_lat, pos_lng, bike_stands FROM wheelieGood.dynamic_bikes INNER JOIN wheelieGood.static_bikes ON dynamic_bikes.number = static_bikes.number;", engine)
-#     all_data = df.to_json(orient="records")
-#     return all_data
+@app.route("/allBikes")
+def all_bikes():
+    # Request Data from API
+    engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
+                           echo=True)
+    # Joining both tables
+    sql = """SELECT dynamic_bikes.number, available_bike_stands, available_bikes, last_update, name, address, pos_lat,
+     pos_lng, bike_stands FROM wheelieGood.dynamic_bikes 
+     INNER JOIN wheelieGood.static_bikes ON dynamic_bikes.number = static_bikes.number
+     ORDER BY last_update ASC LIMIT 200;"""
+    df = pd.read_sql(sql, engine)
+    all_data = df.to_json(orient="records")
+    return all_data
 
 @app.route("/weather")
 @lru_cache()
@@ -76,10 +80,9 @@ def get_occupancy(station_id):
     """
 
     df = pd.read_sql_query(sql, engine)
-    res_df = df.set_index('last_update').resample('D').mean()
+    res_df = df.set_index('last_update').resample('1d').mean()
     res_df['last_update'] = res_df.index
     return res_df.to_json(orient='records')
-
 
 @app.route("/contact")
 def contact():
