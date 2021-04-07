@@ -97,10 +97,11 @@ def model(station_id, hour, day):
     forecast_data = forecast_request.json()
 
     # the desired row will be returned as a list
-    result = forecast_formatting.formattingJson(forecast_data, station_id, hour, day)
+    result = forecast_formatting.formattingJson(forecast_data, hour, day)
+    print(result)
 
     # load the predictive model and get a prediction
-    forestPrediction = pickle.load(open('randomForestModel.pkl', 'rb'))
+    forestPrediction = pickle.load(open(f'pickle_jar/randForest{station_id}.pkl', 'rb'))
     prediction = forestPrediction.predict(result)
 
     # numpy array cannot be sent to js, change to list to format to dictionary

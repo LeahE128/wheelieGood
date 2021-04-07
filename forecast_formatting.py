@@ -1,11 +1,9 @@
 import pandas as pd
 import numpy as np
-import pickle
 import requests
 
 
-def formattingJson(forecast_data, station_number, hour, day):
-    print("hello there")
+def formattingJson(forecast_data, hour, day):
     # list weather rows to be added (from api doc)
     weatherConditions = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
 
@@ -54,7 +52,6 @@ def formattingJson(forecast_data, station_number, hour, day):
 
     desired_row = weather_df[(weather_df["hour"] == hour) & (weather_df["weekday"] == day)].values.tolist()
     print(desired_row)
-    desired_row[0].insert(0, station_number)
 
     return desired_row
 
