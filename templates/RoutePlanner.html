@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+   <head>
+    <title>Displaying Text Directions With setPanel()</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+       <link href="{{ url_for('static', filename ='styles.css') }}" rel = "stylesheet" type = "text/css">
+</head>
+  <body>
+<div class="nav_bar">
+        <header>
+            <h1>Wheelie Good - Dublin Bikes</h1>
+		      <nav>
+			     <ul>
+				    <li><a href="/">Home</a></li>
+				    <li class="current"><a href="/RoutePlanner.html">Plan your Journey</a></li>
+				    <li><a href="/about.html">About Us</a></li>
+				    <li><a href="/contact.html">Contact Us</a></li>
+			     </ul>
+		      </nav>
+            </header>
+        </div>
+    <div id="floating-panel">
+      <strong>Start:</strong>
+      <select id="start">
+      </select>
+      <br />
+      <strong>End:  </strong>
+      <select id="end">
+       </select>
+    </div>
+    <div id="right-panel"></div>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='planner.js') }}"></script>
+      <script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC99AyuHEKOKE1VeDkJuM5MKF-RdTIXEAU&callback=initMap&libraries=&v=weekly" async></script>
+  </body>
+</html>
+
+
+
