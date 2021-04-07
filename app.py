@@ -75,6 +75,11 @@ def contact():
     d = {'name': 'Team Wheelie Good'}
     return render_template("contact.html", **d)
 
+@app.route("/RoutePlanner.html")
+def route():
+    d = {'name': 'Team Wheelie Good'}
+    return render_template("/RoutePlanner.html", **d)
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
