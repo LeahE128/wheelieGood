@@ -93,16 +93,23 @@ def contact():
 @app.route("/model/<int:station_id>/<int:hour>/<int:day>")
 def model(station_id, hour, day):
     # parameters needed will be station number, hour (0-23) and day number (0-6)
+
+    # call the forecast api and parse as a json
     forecast_request = requests.get(f"https://api.openweathermap.org/data/2.5/onecall?lat=53.33306&lon=-6.24889&exclude=current,minutely&appid={config.forecast_api}")
     forecast_data = forecast_request.json()
 
-    # the desired row will be returned as a list
+    # parse the data for the desired row and return it as a list
     result = forecast_formatting.formattingJson(forecast_data, hour, day)
-    print(result)
+    if not result:
+        print("No data for this hour. Deferring to daily forecast.")
+        result = forecast_formatting.formattingDailyJson(forecast_data, day)
+        forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forestPrediction.predict(result)
 
-    # load the predictive model and get a prediction
-    forestPrediction = pickle.load(open(f'pickle_jar/randForest{station_id}.pkl', 'rb'))
-    prediction = forestPrediction.predict(result)
+    else:
+        # load the predictive model and get a prediction
+        forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forestPrediction.predict(result)
 
     # numpy array cannot be sent to js, change to list to format to dictionary
     prediction = prediction.tolist()

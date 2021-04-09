@@ -56,8 +56,54 @@ def formattingJson(forecast_data, hour, day):
     return desired_row
 
 
-# forecast = requests.get("https://api.openweathermap.org/data/2.5/onecall?lat=53.33306&lon=-6.24889&exclude=current,minutely&appid=5cf5e19adac515b3f8510d2692fddc43")
-# forecast_data = forecast.json()
-# print(forecast_data)
-# result = formattingJson(forecast_data, 2, 23, 2)
-# print(result)
+def formattingDailyJson(forecast_data, day):
+    # list weather rows to be added (from api doc)
+    weatherConditions = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
+
+    # iterate over the json array to get the hourly data
+    daily_data = 0
+    for k, v in forecast_data.items():
+        if k == "daily":
+            daily_data = v
+
+    # create dailly data dataframe
+    daily_df = pd.DataFrame.from_dict(pd.json_normalize(daily_data), orient='columns')
+    daily_df = daily_df.reindex(daily_df.columns.tolist() + weatherConditions, axis=1)
+
+    weatherValues = []
+    for x in daily_df["weather"]:
+        currentRow = x[0]
+        for key, value in currentRow.items():
+            if key == "main":
+                weatherValues.append(value)
+
+    # give new columns a value of 0 in all cells
+    for col in daily_df:
+        daily_df[col] = daily_df[col].replace(np.nan).fillna(0)
+
+    # where the values match the weather column, make 1
+    for x in range(len(weatherValues)):
+        for column in daily_df.columns:
+            if weatherValues[x] == column:
+                daily_df.at[x, column] = 1
+
+    # get rid of the unneeded rows
+    weather_df = daily_df[
+        ["dt", "temp.day", "wind_speed", "humidity", "Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]]
+
+    # convert from unix epoch time to useable format...
+    from datetime import datetime, timedelta
+    start = datetime(1970, 1, 1)  # Unix epoch start time
+    weather_df['datetime'] = weather_df.dt.apply(lambda x: start + timedelta(seconds=x))
+
+    # Create new column weekday
+    weather_df['weekday'] = weather_df['datetime'].dt.dayofweek
+
+    # dump now defunct datetime column
+    weather_df = weather_df.drop(columns=["dt", "datetime"])
+    # the forecast returns a duplicate day, which will affect our model. we will drop the duplicate
+    weather_df = weather_df.drop(weather_df.index[[7]])
+
+    desired_row = weather_df[(weather_df["weekday"] == day)].values.tolist()
+
+    return weather_df
