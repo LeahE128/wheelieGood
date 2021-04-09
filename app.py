@@ -100,15 +100,16 @@ def model(station_id, hour, day):
 
     # parse the data for the desired row and return it as a list
     result = forecast_formatting.formattingJson(forecast_data, hour, day)
-    if not result:
-        print("No data for this hour. Deferring to daily forecast.")
-        result = forecast_formatting.formattingDailyJson(forecast_data, day)
-        forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
+    
+    if result:
+        # load the predictive model and get a prediction
+        forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
         prediction = forestPrediction.predict(result)
 
     else:
-        # load the predictive model and get a prediction
-        forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
+        print("No data for this hour. Deferring to daily forecast.")
+        result = forecast_formatting.formattingDailyJson(forecast_data, day)
+        forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
         prediction = forestPrediction.predict(result)
 
     # numpy array cannot be sent to js, change to list to format to dictionary
