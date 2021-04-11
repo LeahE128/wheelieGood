@@ -58,13 +58,14 @@ header .current a {
 }
 
 #map {
-  display: inline-block;
-  height: 40%;
-  width: 40%;
-  float: left;
-  padding-left: 8%;
-  padding-right: 10%;
-  margin-left: 2%;
+    display: block;	
+    height: 570px;	
+    width: 904px;	
+    margin-top: 0px;	
+    background-color: white;	
+    font-family: "Trebuchet MS";	
+    color: black;	
+    text-align:left;
 }
 
 #dailyChart {
