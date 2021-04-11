@@ -4,6 +4,9 @@ from sqlalchemy import create_engine
 import config
 from pandas import pandas as pd
 from functools import lru_cache
+import pickle
+import requests
+import forecast_formatting
 
 app = Flask(__name__)
 
@@ -115,6 +118,37 @@ def contact():
 def route():
     d = {'name': 'Team Wheelie Good'}
     return render_template("/RoutePlanner.html", **d)
+
+
+@app.route("/model/<int:station_id>/<int:hour>/<int:day>")
+def model(station_id, hour, day):
+    # parameters needed will be station number, hour (0-23) and day number (0-6)
+
+    # call the forecast api and parse as a json
+    forecast_request = requests.get(f"https://api.openweathermap.org/data/2.5/onecall?lat=53.33306&lon=-6.24889&exclude=current,minutely&appid={config.forecast_api}")
+    forecast_data = forecast_request.json()
+
+    # parse the data for the desired row and return it as a list
+    result = forecast_formatting.formattingJson(forecast_data, hour, day)
+
+    if result:
+        # load the predictive model and get a prediction
+        forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forestPrediction.predict(result)
+
+    else:
+        print("No data for this hour. Deferring to daily forecast.")
+        result = forecast_formatting.formattingDailyJson(forecast_data, day)
+        forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forestPrediction.predict(result)
+
+    # numpy array cannot be sent to js, change to list to format to dictionary
+    prediction = prediction.tolist()
+
+    # zip the result to a dictionary to send back to js
+    keys = ["predicted_bikes"]
+    prediction_output = dict(zip(keys, prediction))
+    return prediction_output
 
 
 if __name__ == "__main__":
