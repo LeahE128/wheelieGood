@@ -69,18 +69,40 @@ def dynamic_weather():
 
 @app.route("/occupancy/<int:station_id>")
 @lru_cache
+# Get Daily Bike information for Chart
 def get_occupancy(station_id):
+    engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
+                           echo=True)
+    sql = f"""
+    SELECT number, dayname(last_update) as day, 
+    FLOOR(avg(available_bike_stands) + 0.5) AS avgStands, 
+    FLOOR(avg(available_bikes) + 0.5) as avgBikes FROM  wheelieGood.dynamic_bikes
+    WHERE number = {station_id}
+    GROUP BY number, day
+    Order by number, last_update ASC;
+    """
+
+    df = pd.read_sql_query(sql, engine)
+    # res_df = df.set_index('last_update').resample('D').mean()
+    # res_df['last_update'] = res_df.index
+    return df.to_json(orient='records')
+
+
+@app.route("/occupancyHourly/<int:station_id>")
+@lru_cache
+# Get Hourly Bike information for Chart
+def get_occupancy_hourly(station_id):
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     sql = f"""
     SELECT number, last_update, available_bike_stands, available_bikes FROM  wheelieGood.dynamic_bikes
     WHERE number = {station_id}
-    GROUP BY number, day(last_update)
+    GROUP BY number, hour(last_update)
     order by number, last_update ASC;
     """
 
     df = pd.read_sql_query(sql, engine)
-    res_df = df.set_index('last_update').resample('1d').mean()
+    res_df = df.set_index('last_update').resample('1h').mean()
     res_df['last_update'] = res_df.index
     return res_df.to_json(orient='records')
 

@@ -77,10 +77,18 @@ header .current a {
     margin-left: 2%;
 }
 
-#chart{
+#dailyChart{
     height: 40%;
     width: 50%;
     margin-top: 1%;
+    float: left;
+    padding-left: 6%;
+    padding-right: 10%;
+}
+
+#hourlyChart{
+    height: 40%;
+    width: 50%;
     float: left;
     padding-left: 6%;
     padding-right: 10%;

@@ -93,11 +93,12 @@ function initMap() {
                 infowindow.open(map, marker);
                 liveWindow = infowindow;
 
-                find_closest_marker(clickedMarker);
+//                find_closest_marker(clickedMarker);
                 getRecommendation(staticData, dynamicData);
 
                 bikeTable(dynamicData, bikes.number, bikes.name);
                 drawOccupancyWeekly(bikes.number);
+                drawOccupancyHourly(bikes.number);
             });
             // console.log(markers)
         })
@@ -119,7 +120,7 @@ function drawOccupancyWeekly(bikes_number){
 //        console.log(data);
 
         var options = {
-                    title: 'Bike availability per day',
+                    title: 'Daily Average Availability for Station Number ' + bikes_number,
                     height: 400,
                     legend: {
                         position: 'top',
@@ -136,10 +137,46 @@ function drawOccupancyWeekly(bikes_number){
                     isStacked: true,
                     backgroundColor: background
                 };
-        var chart = new google.visualization.ColumnChart(document.getElementById("chart"));
+        var chart = new google.visualization.ColumnChart(document.getElementById("dailyChart"));
+        var chart_data = new google.visualization.DataTable();
+        chart_data.addColumn('string', 'Day');
+        chart_data.addColumn('number', 'Bikes');
+        data.forEach(v => {
+            chart_data.addRow([v.day, v.avgBikes]);
+        })
+        chart.draw(chart_data, options);
+    });
+}
+
+function drawOccupancyHourly(bikes_number){
+//This is called when a user clicks on the marker
+    fetch("/occupancyHourly/" + bikes_number).then(response => {
+        return response.json();
+    }).then(data => {
+        console.log(data);
+
+        var options = {
+                    title: 'Hourly Average Availability for Station Number ' + bikes_number,
+                    height: 400,
+                    legend: {
+                        position: 'top',
+                        maxLines: 3
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'out'
+                    },
+                    colors: chart_colors,
+                    bar: {
+                        groupWidth: '75%'
+                    },
+                    isStacked: true,
+                    backgroundColor: background
+                };
+        var chart = new google.visualization.LineChart(document.getElementById("hourlyChart"));
         var chart_data = new google.visualization.DataTable();
         chart_data.addColumn('datetime', "Date");
-        chart_data.addColumn('number', "Bike Availability");
+        chart_data.addColumn('number', "Bikes");
         data.forEach(v => {
             chart_data.addRow([new Date(v.last_update), v.available_bikes]);
         })
@@ -221,7 +258,7 @@ function availableStands(number, dynamicBikes) {
             let station_select = "<select id='stationSel'><option value='none'>Select Station</option>";
             data.forEach(bikes => {
                 // console.log(bikes)
-                console.log(bikes.number)
+//                console.log(bikes.number)
 
                 station_select += "<option value =" + bikes.number + ">" + bikes.name + "</option>";
             })
