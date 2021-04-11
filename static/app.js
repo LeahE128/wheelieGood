@@ -300,7 +300,6 @@ stationSelect();
 
 
 function getTable(dynamicDataJ, StaticDataJ) {
-
         //console.log(dynamicBikesJson)
         let dynamic = dynamicDataJ;
         let static = StaticDataJ;

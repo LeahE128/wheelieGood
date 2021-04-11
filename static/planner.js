@@ -1,5 +1,10 @@
+let hourValue;
+let stationValue;
+let dayValue;
+
+
 function initMap() {
-    fetch("/staticBikes").then(response=> {
+    fetch("/staticBikes").then(response => {
         return response.json();
 
     }).then(data => {
@@ -48,13 +53,62 @@ function initMap() {
             route_select += "<option value =" + bikes.pos_lat + ',' + bikes.pos_lng + ">" + bikes.name + "</option>";
         })
         route_select += "</select>";
+
         console.log(route_select)
         document.getElementById("start").innerHTML += route_select;
         document.getElementById("end").innerHTML += route_select;
 
         var selectedRoute = document.getElementById("start").value;
         console.log(selectedRoute);
+
+        availabilityPrediction();
     })
+}
+
+
+function availabilityPrediction() {
+    fetch("/allBikes").then(response => {
+        return response.json();
+    }).then(data => {
+        let station_prediction = "<select id='predictedStation'><option value='none'>Select Station</option>";
+        let hour_prediction = "<select id='predictedHour'><option value='none'>Select Hour</option>";
+        let day_prediction = "<select id='predictedDay'><option value='none'>Select Day</option>";
+        let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+        for (var i = 0; i < 24; i++) {
+            hour_prediction += "<option value =" + i + ">" + i + "</option>";
+        }
+        for (var i = 0; i < 7; i++) {
+            day_prediction += "<option value =" + i + ">" + daysOfWeek[i] + "</option>";
+        }
+        hour_prediction += "</select>";
+        day_prediction += "</select>";
+        data.forEach(prediction => {
+            station_prediction += "<option value =" + prediction.number + ">" + prediction.name + "</option>";
+        })
+        station_prediction += "</select><button type=\"button\" onclick=\"predictionValues(stationValue, hourValue, dayValue)\">Get Info</button>"
+        document.getElementById("prediction").innerHTML += hour_prediction;
+        document.getElementById("prediction").innerHTML += day_prediction;
+        document.getElementById("prediction").innerHTML += station_prediction;
+    })
+}
+    document.getElementById("prediction").addEventListener("click", function() {
+        hourValue = document.getElementById("predictedHour").value;
+        dayValue = document.getElementById("predictedDay").value;
+        stationValue = document.getElementById("predictedStation").value;
+    })
+
+function predictionValues(stationNumber, hour, day) {
+    console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
+    fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
+        return response.json();
+
+    }).then(data => {
+        console.log(data)
+    })
+}
+
+
 
 
       function calculateAndDisplayRoute(directionsService, directionsRenderer) {
@@ -74,6 +128,4 @@ function initMap() {
             }
           }
         );
-
-      }}
-
+      }
