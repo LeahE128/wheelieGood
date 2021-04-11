@@ -40,7 +40,7 @@ def static_bikes():
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     # Using static bike table
-    df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes;", engine)
+    df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC;", engine)
     bike_data = df.to_json(orient="records")
     return bike_data
 
