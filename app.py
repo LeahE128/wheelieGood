@@ -139,6 +139,7 @@ def model(station_id, hour, day):
     else:
         print("No data for this hour. Deferring to daily forecast.")
         result = forecast_formatting.formattingDailyJson(forecast_data, day)
+        print(result)
         forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
         prediction = forestPrediction.predict(result)
 
