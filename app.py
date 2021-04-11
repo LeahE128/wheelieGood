@@ -100,7 +100,7 @@ def model(station_id, hour, day):
 
     # parse the data for the desired row and return it as a list
     result = forecast_formatting.formattingJson(forecast_data, hour, day)
-    
+
     if result:
         # load the predictive model and get a prediction
         forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
