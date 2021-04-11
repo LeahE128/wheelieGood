@@ -86,7 +86,7 @@ function initMap() {
                     content: "<h4>" + bikes.name + "</h4>" + "<hr>" +
                         "<p>Station Number: " + bikes.number + "</p>" +
                         "<p>Available Bikes: " + bikes.available_bikes + "</p>" +
-                        "<p>Available Stands: " + bikes.available_bikes + "</p>"
+                        "<p>Available Stands: " + bikes.available_bike_stands + "</p>"
                 });
 
 //          Open the infowindow, assign the infowindow to liveWindow variable
