@@ -15,7 +15,7 @@ function initCharts(){
 function initMap() {
 //  Setting info window variable to null
     var liveWindow = null;
-    
+
 //  Fetching the data
     getDynamicBikes();
     fetch("/allBikes").then(response=> {
@@ -344,31 +344,31 @@ function getTable(dynamicDataJ, StaticDataJ) {
 
 
 
-//    function find_closest_marker(event) {
-//      var distances = [];
-//      // var closest = -1;
-//      // var secondClosest = -1;
-//      for (i = 0; i < markers.length; i++) {
-//        var d = google.maps.geometry.spherical.computeDistanceBetween(event, markers[i].position);
-//        distances[i] = d;
-//        console.log(distances)
-//        if (d < 1000 && d != 0) {
-//          closest_markers.push({marker_index: i, distance_lengths: d});
-//          closest_markers.sort(function (a, b) {
-//            return a.distance_lengths- b.distance_lengths;
-//            });
-//        }
-//
-//      }
-//
-//      for (i = 0; i < closest_markers.length; i++) {
-//          closest_positions.sort(function (a, b) {
-//            return a.distance_lengths- b.distance_lengths;
-//            });
-//          closest_positions.push({marker_positions: markers[closest_markers[i].marker_index].position, distance_lengths : closest_markers[i].distance_lengths/1000});
-//
-//      }
-//    }
+   function find_closest_marker(event) {
+     var distances = [];
+     // var closest = -1;
+     // var secondClosest = -1;
+     for (i = 0; i < markers.length; i++) {
+       var d = google.maps.geometry.spherical.computeDistanceBetween(event, markers[i].position);
+       distances[i] = d;
+       console.log(distances)
+       if (d < 1000 && d != 0) {
+         closest_markers.push({marker_index: i, distance_lengths: d});
+         closest_markers.sort(function (a, b) {
+           return a.distance_lengths- b.distance_lengths;
+           });
+       }
+
+     }
+
+     for (i = 0; i < closest_markers.length; i++) {
+         closest_positions.sort(function (a, b) {
+           return a.distance_lengths- b.distance_lengths;
+           });
+         closest_positions.push({marker_positions: markers[closest_markers[i].marker_index].position, distance_lengths : closest_markers[i].distance_lengths/1000});
+
+     }
+   }
 
 closest_positions.sort(function (a, b) {
             return a.distance_lengths- b.distance_lengths;
@@ -392,10 +392,3 @@ function getRecommendation(staticBikes, dynamicBikes) {
         }
     }
 }
-
-
-
-
-
-
-
