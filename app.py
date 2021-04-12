@@ -140,16 +140,26 @@ def model(station_id, hour, day):
     else:
         print("No data for this hour. Deferring to daily forecast.")
         result = forecast_formatting.formattingDailyJson(forecast_data, day)
-        print(result)
         forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
         prediction = forestPrediction.predict(result)
 
     # numpy array cannot be sent to js, change to list to format to dictionary
+    result = result[0]
+    # add our predicted value to the weather info for js
     prediction = prediction.tolist()
+    result.insert(0, prediction[0])
 
-    # zip the result to a dictionary to send back to js
-    keys = ["predicted_bikes"]
-    prediction_output = dict(zip(keys, prediction))
+    filtered_result = result[4:10]
+
+    weatherValues = ["humidity", "Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
+    for index in range(len(filtered_result)):
+        if filtered_result[index] == 1.0:
+            result.insert(4, weatherValues[index])
+
+    result = result[0:5]
+
+    keys = ["predicted_bikes", "temp", "wind_speed", "humidity", "weather"]
+    prediction_output = dict(zip(keys, result))
     return prediction_output
 
 
