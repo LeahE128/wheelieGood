@@ -44,6 +44,7 @@ def static_bikes():
     bike_data = df.to_json(orient="records")
     return bike_data
 
+
 @app.route("/allBikes")
 def all_bikes():
     # Request Data from API
@@ -151,14 +152,15 @@ def model(station_id, hour, day):
 
     filtered_result = result[4:10]
 
-    weatherValues = ["humidity", "Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
+    weatherValues = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
     for index in range(len(filtered_result)):
         if filtered_result[index] == 1.0:
-            result.insert(4, weatherValues[index])
+            result.insert(1, weatherValues[index])
 
     result = result[0:5]
+    print(result)
 
-    keys = ["predicted_bikes", "temp", "wind_speed", "humidity", "weather"]
+    keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity"]
     prediction_output = dict(zip(keys, result))
     return prediction_output
 

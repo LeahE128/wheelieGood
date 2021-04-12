@@ -105,5 +105,6 @@ def formattingDailyJson(forecast_data, day):
     weather_df = weather_df.drop(weather_df.index[[7]])
 
     desired_row = weather_df[(weather_df["weekday"] == day)].values.tolist()
+    print(desired_row)
 
     return desired_row

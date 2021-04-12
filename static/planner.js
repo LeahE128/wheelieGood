@@ -1,6 +1,7 @@
 let hourValue;
 let stationValue;
 let dayValue;
+let bike_stands;
 
 
 function initMap() {
@@ -76,15 +77,22 @@ function availabilityPrediction() {
         let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
         for (var i = 0; i < 24; i++) {
-            hour_prediction += "<option value =" + i + ">" + i + "</option>";
+            hour_prediction += "<option value =" + i + ">" + i+":00" + "</option>";
         }
+        // add dates to the dropdown
+        let currentDate = new Date();
+        let cDay = currentDate.getDate();
+        let cMonth = currentDate.getMonth()+1;
+        let cYear = currentDate.getFullYear();
+
         for (var i = 0; i < 7; i++) {
-            day_prediction += "<option value =" + i + ">" + daysOfWeek[i] + "</option>";
+            day_prediction += "<option value =" + i + ">" + daysOfWeek[i] + " - " + (cDay +i) + "/" + cMonth + "/" + cYear + "</option>";
         }
         hour_prediction += "</select>";
         day_prediction += "</select>";
         data.forEach(prediction => {
             station_prediction += "<option value =" + prediction.number + ">" + prediction.name + "</option>";
+
         })
         station_prediction += "</select><button type=\"button\" onclick=\"predictionValues(stationValue, hourValue, dayValue)\">Get Info</button>"
         document.getElementById("prediction").innerHTML += hour_prediction;
@@ -92,6 +100,7 @@ function availabilityPrediction() {
         document.getElementById("prediction").innerHTML += station_prediction;
     })
 }
+
     document.getElementById("prediction").addEventListener("click", function() {
         hourValue = document.getElementById("predictedHour").value;
         dayValue = document.getElementById("predictedDay").value;
@@ -99,13 +108,14 @@ function availabilityPrediction() {
     })
 
 function predictionValues(stationNumber, hour, day) {
-    console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
-    fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
-        return response.json();
-
-    }).then(data => {
-        console.log(data)
-    })
+    if ((stationNumber || hour || day) != undefined) {
+        console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
+        fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
+            return response.json();
+        }).then(data => {
+            console.log(data)
+        })
+    }
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
