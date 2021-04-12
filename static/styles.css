@@ -3,20 +3,30 @@ html {
   background-size: cover;
   font-family: "Trebuchet MS";
   color: Black;
+  height: 100%;
+  width: 100%;
 }
 
 body {
   font-family: trebuchet ms;
   color: black;
-  background-color: #002255;
+  background-color: white;
   text-align: center;
+  height: 90%;
+  width: 100%;
+}
+
+.container {
+  margin: 0 auto;    /* This centers the page in modern browsers */
+  text-align: left;  /* This is a hack for older browsers to center the page */
 }
 
 header {
-  height: 60px;
-  padding-top: 50px;
-  background-image: url("your_image_path");
-  background-color: white;
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
 }
 
 header h1 {
@@ -28,14 +38,21 @@ header h1 {
   font-size: 30px;
 }
 
+section {
+  display: -webkit-flex;
+  display: flex;
+  flex-basis: 100%;
+}
+
 header nav {
-  color: black;
-  float: right;
-  text-decoration: none;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #ccc;
+  padding: 20px;
 }
 
 header nav ul li {
-  float: left;
   display: inline-block;
   text-decoration: none;
 }
@@ -57,20 +74,19 @@ header .current a {
   color: darkseagreen;
 }
 
-#map {
-    display: block;	
-    height: 570px;	
-    width: 904px;	
-    margin-top: 0px;	
-    background-color: white;	
-    font-family: "Trebuchet MS";	
-    color: black;	
-    text-align:left;
+.col_sidebar {
+   -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow-y: scroll;
+  bottom: 0;
+  background-color: darkseagreen;
+  float:left;
 }
 
 #dailyChart {
   height: 40%;
-  width: 50%;
+  width: 100%;
   margin-top: 1%;
   float: left;
   padding-left: 6%;
@@ -79,7 +95,7 @@ header .current a {
 
 #hourlyChart {
   height: 40%;
-  width: 50%;
+  width: 100%;
   float: left;
   padding-left: 6%;
   padding-right: 10%;
@@ -135,46 +151,20 @@ div.weather_widget {
 #stationSelDiv {
 }
 
-.container {
-  max-width: 100%;
-  max-height: 100%;
-  font-family: sans-serif;
-  margin-top: 0;
-  margin-bottom: 0;
-  background-color: white;
-}
 
 h2 {
   color: white;
 }
 
-.flex-grid {
-  color: white;
-}
 
-.col {
-  background-color: white;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.sidebar {
-  position: fixed;
-  margin-top: 133px;
-  width: 350px;
-  overflow-y: scroll;
-  top: 0;
-  bottom: 0;
-  background-color: darkseagreen;
-}
-
-.main {
-  margin-left: 350px;
-  background-color: white;
-}
-
-body {
-  margin-bottom: 0;
+#map {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  height:80vh;
+  width:100vh;
+  background-color: #f1f1f1;
+  padding: 10px;
 }
 
 #bikeTable {
@@ -246,4 +236,11 @@ tbody tr:nth-of-type(even) {
 
 #about {
   border-bottom-color: #5599ff;
+}
+
+@media (max-width: 600px) {
+  section {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
 }
