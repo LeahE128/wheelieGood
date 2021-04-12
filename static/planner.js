@@ -108,24 +108,21 @@ function predictionValues(stationNumber, hour, day) {
     })
 }
 
-
-
-
-      function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-        const start = document.getElementById("start").value;
-        const end = document.getElementById("end").value;
-        directionsService.route(
-          {
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    const start = document.getElementById("start").value;
+    const end = document.getElementById("end").value;
+    directionsService.route(
+        {
             origin: start,
             destination: end,
             travelMode: google.maps.TravelMode.DRIVING,
-          },
-          (response, status) => {
-            if (status === "OK") {
-              directionsRenderer.setDirections(response);
-            } else {
-              window.alert("Directions request failed due to " + status);
-            }
-          }
-        );
+      },
+        (response, status) => {
+        if (status === "OK") {
+            directionsRenderer.setDirections(response);
+        } else {
+            window.alert("Directions request failed due to " + status);
+        }
       }
+     );
+}
