@@ -55,12 +55,10 @@ function initMap() {
         })
         route_select += "</select>";
 
-        console.log(route_select)
         document.getElementById("start").innerHTML += route_select;
         document.getElementById("end").innerHTML += route_select;
 
         var selectedRoute = document.getElementById("start").value;
-        console.log(selectedRoute);
 
         availabilityPrediction();
     })
@@ -76,17 +74,26 @@ function availabilityPrediction() {
         let day_prediction = "<select id='predictedDay'><option value='none'>Select Day</option>";
         let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
+        // add dates to the dropdown
+        let currentDate = new Date();
+        let weekday = currentDate.getDay() -1;
+        let cDay = currentDate.getDate();
+        let cMonth = currentDate.getMonth() +1;
+        let cYear = currentDate.getFullYear();
+
         for (var i = 0; i < 24; i++) {
             hour_prediction += "<option value =" + i + ">" + i+":00" + "</option>";
         }
-        // add dates to the dropdown
-        let currentDate = new Date();
-        let cDay = currentDate.getDate();
-        let cMonth = currentDate.getMonth()+1;
-        let cYear = currentDate.getFullYear();
 
+        // Populate dropdown with appropriate indexes as values, for model
         for (var i = 0; i < 7; i++) {
-            day_prediction += "<option value =" + i + ">" + daysOfWeek[i] + " - " + (cDay +i) + "/" + cMonth + "/" + cYear + "</option>";
+            let currentDay = daysOfWeek[(weekday + i) % 7];
+            for (var j = 0; j < 7; j++) {
+                if (currentDay == daysOfWeek[j]) {
+                    day_prediction += "<option value =" + j + ">" + currentDay +
+                        " - " + (cDay + i) + "/" + cMonth + "/" + cYear + "</option>";
+                }
+            }
         }
         hour_prediction += "</select>";
         day_prediction += "</select>";
@@ -109,6 +116,7 @@ function availabilityPrediction() {
 
 function predictionValues(stationNumber, hour, day) {
     if ((stationNumber || hour || day) != undefined) {
+        console.log("Error, one or more values not selected.")
         console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
         fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
             return response.json();
