@@ -6,7 +6,7 @@ from pandas import pandas as pd
 from functools import lru_cache
 import pickle
 import requests
-import forecast_formatting
+import df_reformatting
 
 app = Flask(__name__)
 
@@ -124,6 +124,12 @@ def route():
 
 @app.route("/model/<int:station_id>/<int:hour>/<int:day>")
 def model(station_id, hour, day):
+    # get static bikes information too
+    engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
+                           echo=True)
+    static_bikes_df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC;", engine)
+    station_info = df_reformatting.reformatting_static_bikes(static_bikes_df, station_id)
+
     # parameters needed will be station number, hour (0-23) and day number (0-6)
 
     # call the forecast api and parse as a json
@@ -131,7 +137,7 @@ def model(station_id, hour, day):
     forecast_data = forecast_request.json()
 
     # parse the data for the desired row and return it as a list
-    result = forecast_formatting.formattingJson(forecast_data, hour, day)
+    result = df_reformatting.formattingJson(forecast_data, hour, day)
 
     if result:
         # load the predictive model and get a prediction
@@ -140,7 +146,7 @@ def model(station_id, hour, day):
 
     else:
         print("No data for this hour. Deferring to daily forecast.")
-        result = forecast_formatting.formattingDailyJson(forecast_data, day)
+        result = df_reformatting.formattingDailyJson(forecast_data, day)
         forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
         prediction = forestPrediction.predict(result)
 
@@ -152,15 +158,18 @@ def model(station_id, hour, day):
 
     filtered_result = result[4:10]
 
-    weatherValues = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
+    # add a weather description to the list for the correct weather type
+    weather_values = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
     for index in range(len(filtered_result)):
         if filtered_result[index] == 1.0:
-            result.insert(1, weatherValues[index])
+            result.insert(1, weather_values[index])
 
     result = result[0:5]
+    result.extend((station_info[1], station_info[5]-prediction[0]))
     print(result)
 
-    keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity"]
+    # zip the list to dictionary for return to js
+    keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity", "station_name", "predicted_available_stands"]
     prediction_output = dict(zip(keys, result))
     return prediction_output
 

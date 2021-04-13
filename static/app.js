@@ -262,7 +262,6 @@ function availableStands(number, dynamicBikes) {
             station_select += "</select><button type=\"button\" onclick=\"getTable(dynamicData, staticData)\">Get Info</button>"
             document.getElementById("stationSelDiv").innerHTML += station_select;
             var selectedStation = document.getElementById("stationSel").value;
-            // console.log(selectedStation);
         })
     }
 

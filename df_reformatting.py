@@ -108,3 +108,11 @@ def formattingDailyJson(forecast_data, day):
     print(desired_row)
 
     return desired_row
+
+
+def reformatting_static_bikes(static_data, number):
+    desired_row = static_data[static_data["number"] == number]
+    desired_list = list(desired_row.values)
+    formatted_list = (desired_list[0])
+    print(formatted_list)
+    return formatted_list

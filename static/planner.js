@@ -114,14 +114,29 @@ function availabilityPrediction() {
         stationValue = document.getElementById("predictedStation").value;
     })
 
+
 function predictionValues(stationNumber, hour, day) {
-    console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
     fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
         return response.json();
     }).then(data => {
         console.log(data)
-        console.log(data.humidity)
-        console.log(data.predicted_bikes)
+        let tableOut = "<table>";
+                tableOut += "<thead>" + "<tr>" +
+                    "<th>Station Name</th>" +
+                    "<th>Station Number</th>" +
+                    "<th>Predicted Available Stands</th>" +
+                    "<th>Predicted Available Bikes</th></tr>" +
+                    "</thead>";
+
+
+                tableOut += "<tr><td>" +
+                    data.station_name + "</td></tr>" + "<tr><td>" +
+                    stationNumber + "</td></tr>" + "<tr><td>" +
+                    data.predicted_available_stands + "</td></tr>" + "<tr><td>" +
+                    data.predicted_bikes + "</td></tr>";
+                tableOut += "</table>";
+
+                document.getElementById("bikeTable").innerHTML = tableOut;
         })
 }
 
