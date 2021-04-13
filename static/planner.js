@@ -114,7 +114,7 @@ function availabilityPrediction() {
         stationValue = document.getElementById("predictedStation").value;
     })
 
-function predictionValues(stationNumber, hour, day, bike_stands) {
+function predictionValues(stationNumber, hour, day) {
     console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
     fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
         return response.json();
