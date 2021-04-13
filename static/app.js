@@ -257,9 +257,6 @@ function availableStands(number, dynamicBikes) {
         }).then(data => {
             let station_select = "<select id='stationSel'><option value='none'>Select Station</option>";
             data.forEach(bikes => {
-                // console.log(bikes)
-//                console.log(bikes.number)
-
                 station_select += "<option value =" + bikes.number + ">" + bikes.name + "</option>";
             })
             station_select += "</select><button type=\"button\" onclick=\"getTable(dynamicData, staticData)\">Get Info</button>"
@@ -308,7 +305,7 @@ function getTable(dynamicDataJ, StaticDataJ) {
         for (let key in static) {
             console.log(static[key].name)
             var selectedStation = document.getElementById("stationSel").value;
-        console.log(selectedStation);
+            console.log(selectedStation);
             let stationName = static[key].number
             if (selectedStation == stationName) {
 

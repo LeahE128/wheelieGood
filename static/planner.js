@@ -114,17 +114,17 @@ function availabilityPrediction() {
         stationValue = document.getElementById("predictedStation").value;
     })
 
-function predictionValues(stationNumber, hour, day) {
-    if ((stationNumber || hour || day) != undefined) {
-        console.log("Error, one or more values not selected.")
-        console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
-        fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
-            return response.json();
-        }).then(data => {
-            console.log(data)
+function predictionValues(stationNumber, hour, day, bike_stands) {
+    console.log("This is the prediction values function: " + stationNumber + " " + hour + " " + day)
+    fetch("/model/" + stationNumber + "/" + hour + "/" + day).then(response => {
+        return response.json();
+    }).then(data => {
+        console.log(data)
+        console.log(data.humidity)
+        console.log(data.predicted_bikes)
         })
-    }
 }
+
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     const start = document.getElementById("start").value;
