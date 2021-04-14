@@ -418,6 +418,7 @@ function getRecommendation(staticBikes, dynamicBikes) {
     }
 var html = "";
 for (var i =0; i < result.length; i++) {
+
     let tableOut = "<table>";
                 tableOut += "<thead>" + "<tr>" +
                     "<th>Station Name</th>" +
@@ -425,6 +426,13 @@ for (var i =0; i < result.length; i++) {
                     "<th>Available Bike Stands</th>" +
                     "<th>Distance in km</th></tr>" +
                     "</thead>";
+
+    html += "<li>" + result[i].Station_name + "is" + result[i].distances + "in km away and has " + result[i].Available_bikes + "available bikes and " + result[i].Available_stands + "available bike stands" + "</li>";
+}
+
+document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + html;
+
+
 
 
                 tableOut += "<tr><td>" +
@@ -436,14 +444,4 @@ for (var i =0; i < result.length; i++) {
                 document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + tableOut;
 
 }
-
-
-
-}
-
-function resetRecommendations () {
-    document.getElementById("recommendations").innerHTML = "";
-}
-
-
 
