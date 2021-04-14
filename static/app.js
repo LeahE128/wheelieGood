@@ -432,18 +432,5 @@ function resetRecommendations () {
     document.getElementById("recommendations").innerHTML = "";
 }
 
-}
-
-document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + html;
-
-
-
-
-}
-
-function resetRecommendations () {
-    document.getElementById("recommendations").innerHTML = "";
-}
-
 
 
