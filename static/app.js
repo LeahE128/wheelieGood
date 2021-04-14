@@ -7,6 +7,7 @@ let closest_positions= [];
 let closest_markers = [];
 
 
+
 function initCharts(){
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(initMap);
@@ -76,9 +77,11 @@ function initMap() {
             marker.addListener("click", () => {
                 let clickedMarker = marker.position;
 
+
 //          If it is open, close the infowindow
                 if (liveWindow !== null) {
                     liveWindow.close();
+
                 }
 
 //          Create the infowindow
@@ -93,15 +96,18 @@ function initMap() {
                 infowindow.open(map, marker);
                 liveWindow = infowindow;
 
-//                find_closest_marker(clickedMarker);
+                find_closest_marker(clickedMarker);
                 getRecommendation(staticData, dynamicData);
-
+                console.log(recommendations)
+                // resetRecommendationDiv();
+                // console.log(recommendations)
                 bikeTable(dynamicData, bikes.number, bikes.name);
                 drawOccupancyWeekly(bikes.number);
                 drawOccupancyHourly(bikes.number);
             });
-            // console.log(markers)
+
         })
+
 
         }).catch(err => {
             console.log("OOPS!", err);
@@ -110,8 +116,8 @@ function initMap() {
 }
 
 
-const chart_colors = ['#191970'];
-const background = '#ADD8E6';
+const chart_colors = ['#39FF14'];
+const background = 'grey';
 function drawOccupancyWeekly(bikes_number){
 //This is called when a user clicks on the marker
     fetch("/occupancy/" + bikes_number).then(response => {
@@ -208,7 +214,7 @@ function availableStands(number, dynamicBikes) {
             let standNumber = dynamicBikesJson[key].number;
             if (standNumber == stationNumber) {
 
-                let tableOut = "<table>";
+                 let tableOut = "<table>";
                 tableOut += "<thead>" + "<tr>" +
                     "<th>Number</th>" +
                     "<th>Name</th>" +
@@ -228,7 +234,7 @@ function availableStands(number, dynamicBikes) {
                     availableBikes + "</td></tr>";
                 tableOut += "</table>";
 
-                document.getElementById("bikeTable").innerHTML = tableOut;
+                document.getElementById("bikeTable").innerHTML = "<h3>Station and Bike Availability</h3>" + tableOut;
             }
         }
     }
@@ -286,9 +292,11 @@ stationSelect();
             const weather_main = data[last_item].weather_main;
             const weather_icon = data[last_item].weather_icon;
             const weather_city = data[last_item].city_name;
+            var d = new Date();
             const weather_temp = data[last_item].main_temp - 273.53;
             var weather_temp_int = parseInt(weather_temp);
             var iconurl = "http://openweathermap.org/img/w/" + weather_icon + ".png";
+            document.getElementById("weather_today").innerHTML = d.toDateString();
             document.getElementById('city').innerHTML = weather_city;
             document.getElementById('temp').innerHTML = weather_temp_int + '℃';
             document.getElementById('weather_description').innerHTML = weather_main;
@@ -303,6 +311,7 @@ function getTable(dynamicDataJ, StaticDataJ) {
         //console.log(dynamicBikesJson)
         let dynamic = dynamicDataJ;
         let static = StaticDataJ;
+        console.log(static)
         var selectedStation = document.getElementById("stationSel").value;
         console.log(selectedStation);
         for (let key in static) {
@@ -312,9 +321,10 @@ function getTable(dynamicDataJ, StaticDataJ) {
             let stationName = static[key].number
             if (selectedStation == stationName) {
 
-                let number = dynamic[key].number;
+                let number = static[key].number;
                 let availableBikes = dynamic[key].available_bikes;
                 let availableBikeStands = dynamic[key].available_bike_stands;
+                let station = static[key].name;
 
                 let tableOut = "<table>";
                 tableOut += "<thead>" + "<tr>" +
@@ -327,23 +337,24 @@ function getTable(dynamicDataJ, StaticDataJ) {
 
                 tableOut += "<tr><td>" +
                     number + "</td></tr>" + "<tr><td>" +
-                    stationName + "</td></tr>" + "<tr><td>" +
+                    station + "</td></tr>" + "<tr><td>" +
                     availableBikeStands + "</td></tr>" + "<tr><td>" +
                     availableBikes + "</td></tr>";
                 tableOut += "</table>";
 
-                document.getElementById("bikeTable").innerHTML = tableOut;
+                document.getElementById("bikeTable").innerHTML = "<h3>Station and Bike Availability</h3>" + tableOut;
 
                 drawOccupancyWeekly(selectedStation);
+                drawOccupancyHourly(selectedStation);
 
 
             }
         }
     }
 
-
-
    function find_closest_marker(event) {
+    // resetRecommendationDiv();
+    console.log(recommendations);
      var distances = [];
      // var closest = -1;
      // var secondClosest = -1;
@@ -376,18 +387,38 @@ closest_positions.sort(function (a, b) {
 function getRecommendation(staticBikes, dynamicBikes) {
     getDynamicBikes();
     getStaticBikes();
+    var dict = [];
     for (let key in staticBikes) {
+
         // console.log(staticBikes[key])
         let stationPosition = ("("+staticBikes[key].pos_lat + ", " + staticBikes[key].pos_lng+")") ;
         // console.log(staticBikes[key].name);
         for (i = 0; i < closest_positions.length; i++) {
            if (stationPosition == closest_positions[i].marker_positions && dynamicBikes[key].available_bikes > 5) {
-            let recommendations = "Station Name: " + staticBikes[key].name + ", " + "Available Bikes: " + dynamicBikes[key].available_bikes + "," +  "Distance in Km: " + closest_positions[i].distance_lengths.toFixed(3);
-                document.getElementById("recommendations").innerHTML += recommendations;
-        }
+               // console.log(staticBikes[key].name);
+               dict.push({Station_name: staticBikes[key].name, Available_bikes:dynamicBikes[key].available_bikes, Available_stands: dynamicBikes[key].available_bike_stands, distances: closest_positions[i].distance_lengths.toFixed(3)})
+
+           }
+           console.log(dict);
 
 
-            // return dynamicBikes[key].available_bikes;
         }
+        let uniqueNames = getUnique(dict);
+           console.log(uniqueNames);
+
     }
+
 }
+
+function getUnique(array){
+        var uniqueArray = [];
+
+        // Loop through array values
+        for(i=0; i < array.length; i++){
+            if(uniqueArray.indexOf(array[i]) === -1) {
+                uniqueArray.push(array[i]);
+            }
+        }
+        return uniqueArray;
+    }
+
