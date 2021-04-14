@@ -7,6 +7,8 @@ from functools import lru_cache
 import pickle
 import requests
 import df_reformatting
+import warnings
+warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
 
@@ -144,24 +146,23 @@ def model(station_id, hour, day):
         weather_icon = result[0][9]
         result[0].pop(9)
         # load the predictive model and get a prediction
-        forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
-        prediction = forestPrediction.predict(result)
+        forest_prediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forest_prediction.predict(result)
 
     else:
         print("No data for this hour. Deferring to daily forecast.")
         result = df_reformatting.formatting_daily_data(forecast_data, day, weather_values)
         weather_icon = result[0][9]
         result[0].pop(9)
-        print(result)
-        forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
-        print(forestPrediction.predict(result[0:11]))
-        prediction = forestPrediction.predict(result[0:11])
+        forest_prediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forest_prediction.predict(result[0:11])
 
-    # numpy array cannot be sent to js, change to list to format to dictionary
+    # 2d array cannot be sent to js, change to list to format to dictionary
     result = result[0]
+    prediction = int(prediction[0])
+
     # add our predicted value to the weather info for js
-    prediction = prediction.tolist()
-    result.insert(0, prediction[0])
+    result.insert(0, prediction)
 
     filtered_result = result[4:10]
 
@@ -171,7 +172,7 @@ def model(station_id, hour, day):
             result.insert(1, weather_values[index])
 
     result = result[0:5]
-    result.extend((station_info[1], station_info[5]-prediction[0], weather_icon))
+    result.extend((station_info[1], station_info[5]-prediction, weather_icon))
 
     # zip the list to dictionary for return to js
     keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity",
