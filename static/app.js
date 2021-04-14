@@ -362,7 +362,7 @@ function getTable(dynamicDataJ, StaticDataJ) {
        var d = google.maps.geometry.spherical.computeDistanceBetween(event, markers[i].position);
        distances[i] = d;
        console.log(distances)
-       if (d < 1000 && d != 0) {
+       if (d < 500 && d != 0) {
          closest_markers.push({marker_index: i, distance_lengths: d});
          closest_markers.sort(function (a, b) {
            return a.distance_lengths- b.distance_lengths;
@@ -388,37 +388,51 @@ function getRecommendation(staticBikes, dynamicBikes) {
     getDynamicBikes();
     getStaticBikes();
     var dict = [];
+    var result = "";
     for (let key in staticBikes) {
 
         // console.log(staticBikes[key])
-        let stationPosition = ("("+staticBikes[key].pos_lat + ", " + staticBikes[key].pos_lng+")") ;
+        let stationPosition = ("(" + staticBikes[key].pos_lat + ", " + staticBikes[key].pos_lng + ")");
         // console.log(staticBikes[key].name);
         for (i = 0; i < closest_positions.length; i++) {
-           if (stationPosition == closest_positions[i].marker_positions && dynamicBikes[key].available_bikes > 5) {
-               // console.log(staticBikes[key].name);
-               dict.push({Station_name: staticBikes[key].name, Available_bikes:dynamicBikes[key].available_bikes, Available_stands: dynamicBikes[key].available_bike_stands, distances: closest_positions[i].distance_lengths.toFixed(3)})
+            if (stationPosition == closest_positions[i].marker_positions && dynamicBikes[key].available_bikes > 5) {
+                // console.log(staticBikes[key].name);
+                dict.push({
+                    Station_name: staticBikes[key].name,
+                    Available_bikes: dynamicBikes[key].available_bikes,
+                    Available_stands: dynamicBikes[key].available_bike_stands,
+                    distances: closest_positions[i].distance_lengths.toFixed(3)
+                })
 
-           }
-           console.log(dict);
-
-
+            }
+            console.log(dict);
+            result = dict.reduce((unique, o) => {
+                if (!unique.some(obj => obj.Station_name === o.Station_name && obj.value === o.value)) {
+                    unique.push(o);
+                }
+                return unique;
+            }, []);
+            console.log(result);
+            result.sort(function (a, b) {
+                return a.distances - b.distances;
+            });
+            console.log(result);
         }
-        let uniqueNames = getUnique(dict);
-           console.log(uniqueNames);
 
     }
+var html = "";
+for (var i =0; i < result.length; i++) {
+    html += "<li>" + result[i].Station_name + "is" + result[i].distances + "in km away and has " + result[i].Available_bikes + "available bikes and " + result[i].Available_stands + "available bike stands" + "</li>";
+}
+
+document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + html;
+
+
+
 
 }
 
-function getUnique(array){
-        var uniqueArray = [];
-
-        // Loop through array values
-        for(i=0; i < array.length; i++){
-            if(uniqueArray.indexOf(array[i]) === -1) {
-                uniqueArray.push(array[i]);
-            }
-        }
-        return uniqueArray;
-    }
+function resetRecommendations () {
+    document.getElementById("recommendations").innerHTML = "";
+}
 
