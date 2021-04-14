@@ -6,7 +6,9 @@ from pandas import pandas as pd
 from functools import lru_cache
 import pickle
 import requests
-import forecast_formatting
+import df_reformatting
+import warnings
+warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
 
@@ -43,6 +45,7 @@ def static_bikes():
     df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC;", engine)
     bike_data = df.to_json(orient="records")
     return bike_data
+
 
 @app.route("/allBikes")
 def all_bikes():
@@ -123,33 +126,58 @@ def route():
 
 @app.route("/model/<int:station_id>/<int:hour>/<int:day>")
 def model(station_id, hour, day):
-    # parameters needed will be station number, hour (0-23) and day number (0-6)
+    # weather values from api doc
+    weather_values = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
+
+    # get static bikes information too
+    engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
+                           echo=True)
+    static_bikes_df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC;", engine)
+    station_info = df_reformatting.reformatting_static_bikes(static_bikes_df, station_id)
 
     # call the forecast api and parse as a json
     forecast_request = requests.get(f"https://api.openweathermap.org/data/2.5/onecall?lat=53.33306&lon=-6.24889&exclude=current,minutely&appid={config.forecast_api}")
     forecast_data = forecast_request.json()
 
     # parse the data for the desired row and return it as a list
-    result = forecast_formatting.formattingJson(forecast_data, hour, day)
+    result = df_reformatting.formatting_hourly_data(forecast_data, hour, day, weather_values)
 
     if result:
+        weather_icon = result[0][9]
+        result[0].pop(9)
         # load the predictive model and get a prediction
-        forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
-        prediction = forestPrediction.predict(result)
+        forest_prediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forest_prediction.predict(result)
 
     else:
         print("No data for this hour. Deferring to daily forecast.")
-        result = forecast_formatting.formattingDailyJson(forecast_data, day)
-        print(result)
-        forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
-        prediction = forestPrediction.predict(result)
+        result = df_reformatting.formatting_daily_data(forecast_data, day, weather_values)
+        weather_icon = result[0][9]
+        result[0].pop(9)
+        forest_prediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
+        prediction = forest_prediction.predict(result[0:11])
 
-    # numpy array cannot be sent to js, change to list to format to dictionary
-    prediction = prediction.tolist()
+    # 2d array cannot be sent to js, change to list to format to dictionary
+    result = result[0]
+    prediction = int(prediction[0])
 
-    # zip the result to a dictionary to send back to js
-    keys = ["predicted_bikes"]
-    prediction_output = dict(zip(keys, prediction))
+    # add our predicted value to the weather info for js
+    result.insert(0, prediction)
+
+    filtered_result = result[4:10]
+
+    # add a weather description to the list for the correct weather type
+    for index in range(len(filtered_result)):
+        if filtered_result[index] == 1.0:
+            result.insert(1, weather_values[index])
+
+    result = result[0:5]
+    result.extend((station_info[1], station_info[5]-prediction, weather_icon))
+
+    # zip the list to dictionary for return to js
+    keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity",
+            "station_name", "predicted_available_stands", "icon"]
+    prediction_output = dict(zip(keys, result))
     return prediction_output
 
 
