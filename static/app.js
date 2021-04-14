@@ -416,54 +416,24 @@ function getRecommendation(staticBikes, dynamicBikes) {
         }
 
     }
-var html = "";
-for (var i =0; i < result.length; i++) {
-<<<<<<< HEAD
+    var html = "";
+    for (var i = 0; i < result.length; i++) {
+        let tableOut = "<table>";
+        tableOut += "<thead>" + "<tr>" +
+            "<th>Station Name</th>" +
+            "<th>Available Bikes</th>" +
+            "<th>Available Bike Stands</th>" +
+            "<th>Distance in km</th></tr>" +
+            "</thead>";
 
-=======
->>>>>>> c02d9d582280b74c48aab12d8888e4d4749bd4bf
-    let tableOut = "<table>";
-                tableOut += "<thead>" + "<tr>" +
-                    "<th>Station Name</th>" +
-                    "<th>Available Bikes</th>" +
-                    "<th>Available Bike Stands</th>" +
-                    "<th>Distance in km</th></tr>" +
-                    "</thead>";
-<<<<<<< HEAD
+        tableOut += "<tr><td>" +
+            result[i].Station_name + "</td></tr>" + "<tr><td>" +
+            result[i].Available_bikes + "</td></tr>" + "<tr><td>" +
+            result[i].Available_stands + "</td></tr>" + "<tr><td>" +
+            result[i].distances + "</td></tr>";
+        tableOut += "</table>";
+        document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + tableOut;
 
-    html += "<li>" + result[i].Station_name + "is" + result[i].distances + "in km away and has " + result[i].Available_bikes + "available bikes and " + result[i].Available_stands + "available bike stands" + "</li>";
+
+    }
 }
-=======
->>>>>>> c02d9d582280b74c48aab12d8888e4d4749bd4bf
-
-
-                tableOut += "<tr><td>" +
-                   result[i].Station_name + "</td></tr>" + "<tr><td>" +
-                    result[i].Available_bikes + "</td></tr>" + "<tr><td>" +
-                    result[i].Available_stands + "</td></tr>" + "<tr><td>" +
-                    result[i].distances+ "</td></tr>";
-                tableOut += "</table>";
-                document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + tableOut;
-
-}
-
-
-
-                tableOut += "<tr><td>" +
-                   result[i].Station_name + "</td></tr>" + "<tr><td>" +
-                    result[i].Available_bikes + "</td></tr>" + "<tr><td>" +
-                    result[i].Available_stands + "</td></tr>" + "<tr><td>" +
-                    result[i].distances+ "</td></tr>";
-                tableOut += "</table>";
-                document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + tableOut;
-
-}
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> c02d9d582280b74c48aab12d8888e4d4749bd4bf
