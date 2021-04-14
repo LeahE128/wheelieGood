@@ -419,20 +419,6 @@ function getRecommendation(staticBikes, dynamicBikes) {
 var html = "";
 for (var i =0; i < result.length; i++) {
     html += "<li>" + result[i].Station_name + "is" + result[i].distances + "in km away and has " + result[i].Available_bikes + "available bikes and " + result[i].Available_stands + "available bike stands" + "</li>";
-<<<<<<< HEAD
-}
-
-document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + html;
-
-
-
-
-}
-
-function resetRecommendations () {
-    document.getElementById("recommendations").innerHTML = "";
-}
-=======
 }
 
 document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + html;
@@ -446,5 +432,18 @@ function resetRecommendations () {
     document.getElementById("recommendations").innerHTML = "";
 }
 
->>>>>>> 97442d3daa3f1e2ec036b76776b9925abe484fc5
+}
+
+document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + html;
+
+
+
+
+}
+
+function resetRecommendations () {
+    document.getElementById("recommendations").innerHTML = "";
+}
+
+
 
