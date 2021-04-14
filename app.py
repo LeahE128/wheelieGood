@@ -124,31 +124,38 @@ def route():
 
 @app.route("/model/<int:station_id>/<int:hour>/<int:day>")
 def model(station_id, hour, day):
+    # weather values from api doc
+    weather_values = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
+
     # get static bikes information too
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     static_bikes_df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC;", engine)
     station_info = df_reformatting.reformatting_static_bikes(static_bikes_df, station_id)
 
-    # parameters needed will be station number, hour (0-23) and day number (0-6)
-
     # call the forecast api and parse as a json
     forecast_request = requests.get(f"https://api.openweathermap.org/data/2.5/onecall?lat=53.33306&lon=-6.24889&exclude=current,minutely&appid={config.forecast_api}")
     forecast_data = forecast_request.json()
 
     # parse the data for the desired row and return it as a list
-    result = df_reformatting.formattingJson(forecast_data, hour, day)
+    result = df_reformatting.formatting_hourly_data(forecast_data, hour, day, weather_values)
 
     if result:
+        weather_icon = result[0][9]
+        result[0].pop(9)
         # load the predictive model and get a prediction
         forestPrediction = pickle.load(open(f'pickle_jar/hourlyModels/randForest{station_id}.pkl', 'rb'))
         prediction = forestPrediction.predict(result)
 
     else:
         print("No data for this hour. Deferring to daily forecast.")
-        result = df_reformatting.formattingDailyJson(forecast_data, day)
+        result = df_reformatting.formatting_daily_data(forecast_data, day, weather_values)
+        weather_icon = result[0][9]
+        result[0].pop(9)
+        print(result)
         forestPrediction = pickle.load(open(f'pickle_jar/dailyModels/randForest{station_id}.pkl', 'rb'))
-        prediction = forestPrediction.predict(result)
+        print(forestPrediction.predict(result[0:11]))
+        prediction = forestPrediction.predict(result[0:11])
 
     # numpy array cannot be sent to js, change to list to format to dictionary
     result = result[0]
@@ -159,17 +166,16 @@ def model(station_id, hour, day):
     filtered_result = result[4:10]
 
     # add a weather description to the list for the correct weather type
-    weather_values = ["Clouds", "Clear", "Snow", "Rain", "Drizzle", "Thunderstorm"]
     for index in range(len(filtered_result)):
         if filtered_result[index] == 1.0:
             result.insert(1, weather_values[index])
 
     result = result[0:5]
-    result.extend((station_info[1], station_info[5]-prediction[0]))
-    print(result)
+    result.extend((station_info[1], station_info[5]-prediction[0], weather_icon))
 
     # zip the list to dictionary for return to js
-    keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity", "station_name", "predicted_available_stands"]
+    keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity",
+            "station_name", "predicted_available_stands", "icon"]
     prediction_output = dict(zip(keys, result))
     return prediction_output
 
