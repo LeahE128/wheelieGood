@@ -72,9 +72,9 @@ function availabilityPrediction() {
         let station_prediction = "<select id='predictedStation'><option value='none'>Select Station</option>";
         let hour_prediction = "<select id='predictedHour'><option value='none'>Select Hour</option>";
         let day_prediction = "<select id='predictedDay'><option value='none'>Select Day</option>";
-        let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
-        // add dates to the dropdown
+        // items for dropdowns
+        let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         let currentDate = new Date();
         let weekday = currentDate.getDay() -1;
         let cDay = currentDate.getDate();
