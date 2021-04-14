@@ -80,8 +80,11 @@ function availabilityPrediction() {
         let cDay = currentDate.getDate();
         let cMonth = currentDate.getMonth() +1;
         let cYear = currentDate.getFullYear();
+        // let time = currentDate.getHours()
 
         for (var i = 0; i < 24; i++) {
+            if (i < 10)
+                i = "0"+i
             hour_prediction += "<option value =" + i + ">" + i+":00" + "</option>";
         }
 
@@ -99,8 +102,8 @@ function availabilityPrediction() {
         day_prediction += "</select>";
         data.forEach(prediction => {
             station_prediction += "<option value =" + prediction.number + ">" + prediction.name + "</option>";
-
         })
+
         station_prediction += "</select><button type=\"button\" onclick=\"predictionValues(stationValue, hourValue, dayValue)\">Get Info</button>"
         document.getElementById("prediction").innerHTML += hour_prediction;
         document.getElementById("prediction").innerHTML += day_prediction;
