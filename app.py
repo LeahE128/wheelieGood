@@ -57,7 +57,10 @@ def all_bikes():
      pos_lng, bike_stands FROM wheelieGood.dynamic_bikes 
      INNER JOIN wheelieGood.static_bikes ON dynamic_bikes.number = static_bikes.number
      ORDER BY last_update ASC LIMIT 200;"""
+
+    # sort rows alphabetically
     df = pd.read_sql(sql, engine)
+    df = df.sort_values(by=['name']).drop_duplicates(subset=['name'])
     all_data = df.to_json(orient="records")
     return all_data
 
