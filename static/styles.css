@@ -143,12 +143,26 @@ header .current a {
 #weather_title{
   border-bottom: solid 4px white;
   color:white;
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
   top: 0;
   background-color:black;
 
 
+}
+
+#prediction{
+  border-top: solid 4px white;
+  color:white;
+  top: 0;
+  background-color:black;
+
+
+}
+
+#right-panel {
+  margin-left: 10%;
+  width: 30%;
+  height: 30%;
+  position: relative;
 }
 #weather_today{
   border-bottom: solid 1px black;
@@ -277,10 +291,62 @@ tbody tr:nth-of-type(even) {
   border-top: solid 4px white;
 
 
+
 }
 
 #recommendations{
   color:white;
+  display: table;
+  position: relative;
+}
+
+#recommendations thead{
+  color:white;
+  display: table;
+
+}
+
+#recommendations tbody {
+  margin: 0 auto;
+}
+
+#recommendations thead tr {
+  background-color: grey;
+  color: #39FF14;
+  text-align: left;
+  font-weight: bold;
+
+}
+
+#recommendations tbody tr {
+  background-color: azure;
+  float:right;
+
+}
+
+#recommendations tbody td {
+  text-align: center;
+  padding: 12px 15px;
+  height: 59.55px;
+  /*min-height: 200px;*/
+  /*max-height: 200px;*/
+  min-width: 122px;
+  max-width: 200px;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  float:left;
+}
+
+#recommendations thead th {
+  height: 60px;
+  padding: 12px 15px;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  float:left;
+}
+
+#recommendations tbody tr:nth-of-type(even) {
+  background-color: aliceblue;
 }
 
 
