@@ -128,8 +128,8 @@ function initMap() {
 }
 
 
-const chart_colors = ['#39FF14'];
-const background = 'grey';
+const chart_colors = ['#8d2663'];
+const background = '#ababab';
 function drawOccupancyWeekly(bikes_number){
 //This is called when a user clicks on the marker
     fetch("/occupancy/" + bikes_number).then(response => {
@@ -449,3 +449,4 @@ function getRecommendation(staticBikes, dynamicBikes) {
 
     }
 }
+

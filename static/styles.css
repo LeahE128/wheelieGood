@@ -1,10 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Poiret+One);
 
 html {
-  background-color: white;
+
   background-size: cover;
   font-family: "Trebuchet MS";
-  color: grey;
   height: 100%;
   width: 100%;
 }
@@ -34,7 +33,7 @@ header h1 {
   float: left;
   margin-left: 2%;
   border: 0;
-  color: #39FF14;
+  color: white;
   font-size: 30px;
 }
 
@@ -48,36 +47,44 @@ header nav {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  background: black;
+  background: #8d2663;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-right: 24px;
+  color: black;
+}
+
+header nav ul{
+  color: white;
 }
 
 header nav ul li {
   display: inline-block;
   text-decoration: none;
+  color: white;
 
 }
 
+
+
 header nav ul li a:hover {
-  color: #39FF14;
+  color: lightgrey;
 }
 
 header nav ul li a {
-  color: white;
   font-weight: bold;
   font-size: 25px;
   text-decoration-line: none;
+  color: white;
 }
 
 header .current a {
-  color: #39FF14;
+  color: lightgrey;
   border-bottom: solid 2px lightgrey;
 }
 
-.col_sidebar {
+#col_sidebar {
    -webkit-flex: 1.5;
   -ms-flex: 1.5;
   flex: 1.5;
@@ -85,10 +92,11 @@ header .current a {
   height:90vh;
   overflow-y: scroll;
   bottom: 0;
-  background-color: grey;
+  background-color: #ababab;
   float:left;
   text-align: center;
   border-top: solid 4px white;
+  color: white;
 }
 #dailyChart {
   background-color: black;
@@ -111,7 +119,7 @@ header .current a {
   margin-top: 2px;
   font-family: Poiret One;
   font-size: 20px;
-  color: #39FF14;
+  color: #ff0dbf;
   background-color: black;
   border: solid 1px lightgrey;
 }
@@ -144,7 +152,7 @@ header .current a {
   border-bottom: solid 4px white;
   color:white;
   top: 0;
-  background-color:grey;
+
 
 
 }
@@ -153,7 +161,7 @@ header .current a {
   border-top: solid 4px white;
   color:white;
   top: 0;
-  background-color:grey;
+  background-color:#ababab;
 
 
 }
@@ -172,7 +180,7 @@ header .current a {
 }
 
 #weather_section{
-  color:#39FF14;
+  color:#8d2663;
 }
 
 div.weather_widget {
@@ -184,7 +192,7 @@ div.weather_widget {
   background-color: #fcfdfd;
   box-shadow: 0px 31px 35px -26px #080c21;
   text-align: center;
-  color: #39FF14;
+  color: #8d2663;
 
 }
 
@@ -239,7 +247,7 @@ tbody {
 
 thead tr {
   background-color: grey;
-  color: #39FF14;
+  color: #8d2663;
   text-align: left;
   font-weight: bold;
 
@@ -312,7 +320,7 @@ tbody tr:nth-of-type(even) {
 
 #recommendations thead tr {
   background-color: grey;
-  color: #39FF14;
+  color: #8d2663;
   text-align: left;
   font-weight: bold;
 
@@ -352,6 +360,14 @@ tbody tr:nth-of-type(even) {
 
 
 .dark-mode {
-  background-color: white;
-  color: black;
+  background-color: #2d2d2d !important;
+  color: white !important;
+}
+
+#bulb_button:hover {
+  background-color: #fceea7 !important;
+}
+
+#bulb_button{
+  border: none !important;
 }
