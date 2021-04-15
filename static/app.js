@@ -74,8 +74,20 @@ function initMap() {
                 map: map,
             });
             markers.push(marker);
+
+            map.addListener("center_changed", () => {
+    //3 seconds after the center of the map has changed, pan back to the
+    //marker.
+    window.setTimeout(() => {
+      map.panTo({lat: 53.349804, lng: -6.260310});
+      map.setZoom(13)
+    }, 5000);
+  });
             marker.addListener("click", () => {
                 let clickedMarker = marker.position;
+                map.setZoom(17);
+    map.setCenter(marker.getPosition());
+
 
 
 //          If it is open, close the infowindow
@@ -416,26 +428,24 @@ function getRecommendation(staticBikes, dynamicBikes) {
         }
 
     }
-    let tableOut = "<table>";
-    tableOut += "<thead>" + "<tr>" +
+    var html = "";
+    for (var i = 0; i < result.length; i++) {
+        let tableOut = "<table>";
+        tableOut += "<thead>" + "<tr>" +
             "<th>Station Name</th>" +
             "<th>Available Bikes</th>" +
             "<th>Available Bike Stands</th>" +
             "<th>Distance in km</th></tr>" +
             "</thead>";
-    for (var i = 0; i < result.length; i++) {
-
 
         tableOut += "<tr><td>" +
             result[i].Station_name + "</td></tr>" + "<tr><td>" +
             result[i].Available_bikes + "</td></tr>" + "<tr><td>" +
             result[i].Available_stands + "</td></tr>" + "<tr><td>" +
             result[i].distances + "</td></tr>";
-
-
+        tableOut += "</table>";
+        document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + tableOut;
 
 
     }
-    tableOut += "</table>";
-     document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + tableOut;
 }
