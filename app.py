@@ -30,8 +30,9 @@ def current_bikes():
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     # Using static bike table
-    df = pd.read_sql('SELECT number, available_bike_stands, available_bikes, '
-                     'MAX(last_update) FROM wheelieGood.dynamic_bikes dynB GROUP BY number;', engine)
+    sql = """SELECT number, available_bike_stands, available_bikes, MAX(last_update) 
+    FROM wheelieGood.dynamic_bikes dynB GROUP BY number LIMIT 200;"""
+    df = pd.read_sql(sql, engine)
     dynamic_bike_data = df.to_json(orient="records")
     return dynamic_bike_data
 
@@ -42,7 +43,8 @@ def static_bikes():
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     # Using static bike table
-    df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC;", engine)
+    sql = """SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC LIMIT 200;"""
+    df = pd.read_sql(sql, engine)
     bike_data = df.to_json(orient="records")
     return bike_data
 
@@ -88,8 +90,8 @@ def get_occupancy(station_id):
     FLOOR(avg(available_bikes) + 0.5) as avgBikes FROM  wheelieGood.dynamic_bikes
     WHERE number = {station_id}
     GROUP BY number, day
-    Order by number, last_update ASC;
-    """
+    Order by number, last_update ASC
+    LIMIT 20;"""
 
     df = pd.read_sql_query(sql, engine)
     # res_df = df.set_index('last_update').resample('D').mean()
@@ -107,7 +109,8 @@ def get_occupancy_hourly(station_id):
     SELECT number, last_update, available_bike_stands, available_bikes FROM  wheelieGood.dynamic_bikes
     WHERE number = {station_id}
     GROUP BY number, hour(last_update)
-    order by number, last_update ASC;
+    order by number, last_update ASC
+    LIMIT 50;
     """
 
     df = pd.read_sql_query(sql, engine)
@@ -135,7 +138,7 @@ def model(station_id, hour, day):
     # get static bikes information too
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
-    static_bikes_df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC;", engine)
+    static_bikes_df = pd.read_sql("SELECT * FROM wheelieGood.static_bikes ORDER BY name ASC LIMIT 200;", engine)
     station_info = df_reformatting.reformatting_static_bikes(static_bikes_df, station_id)
 
     # call the forecast api and parse as a json
