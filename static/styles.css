@@ -303,14 +303,16 @@ tbody tr:nth-of-type(even) {
 }
 
 #recommendations{
+ border-collapse: collapse;
+  font-size: 0.9em;
   color:white;
+  margin: 0 auto;
   display: table;
-  position: relative;
 }
 
 #recommendations thead{
-  color:white;
-  display: table;
+   text-align: left;
+  float: left;
 
 }
 
@@ -328,7 +330,6 @@ tbody tr:nth-of-type(even) {
 
 #recommendations tbody tr {
   background-color: azure;
-  float:right;
 
 }
 
@@ -339,18 +340,15 @@ tbody tr:nth-of-type(even) {
   /*min-height: 200px;*/
   /*max-height: 200px;*/
   min-width: 122px;
-  max-width: 200px;
-  display: inline-block;
-  border-bottom: 1px solid black;
-  float:left;
+  max-width: 122px;
+  color: black;
 }
 
 #recommendations thead th {
-  height: 60px;
+ height: 60px;
   padding: 12px 15px;
-  display: inline-block;
+  display: block;
   border-bottom: 1px solid black;
-  float:left;
 }
 
 #recommendations tbody tr:nth-of-type(even) {

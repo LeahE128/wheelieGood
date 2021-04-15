@@ -110,9 +110,6 @@ function initMap() {
 
                 find_closest_marker(clickedMarker);
                 getRecommendation(staticData, dynamicData);
-                console.log(recommendations)
-                // resetRecommendationDiv();
-                // console.log(recommendations)
                 bikeTable(dynamicData, bikes.number, bikes.name);
                 drawOccupancyWeekly(bikes.number);
                 drawOccupancyHourly(bikes.number);
@@ -135,8 +132,6 @@ function drawOccupancyWeekly(bikes_number){
     fetch("/occupancy/" + bikes_number).then(response => {
         return response.json();
     }).then(data => {
-//        console.log(data);
-
         var options = {
                     title: 'Daily Average Availability for Station Number ' + bikes_number,
                     height: 400,
@@ -171,7 +166,6 @@ function drawOccupancyHourly(bikes_number){
     fetch("/occupancyHourly/" + bikes_number).then(response => {
         return response.json();
     }).then(data => {
-        console.log(data);
 
         var options = {
                     title: 'Hourly Average Availability for Station Number ' + bikes_number,
@@ -221,7 +215,6 @@ function availableStands(number, dynamicBikes) {
 }
 
     function bikeTable(dynamicBikesJson, stationNumber, stationName) {
-        //console.log(dynamicBikesJson)
         for (let key in dynamicBikesJson) {
             let standNumber = dynamicBikesJson[key].number;
             if (standNumber == stationNumber) {
@@ -285,7 +278,6 @@ function availableStands(number, dynamicBikes) {
 
     document.getElementById("stationSelDiv").addEventListener("click", function() {
         var selectedStation = document.getElementById("stationSel").value;
-            console.log(selectedStation);
     })
 
 
@@ -316,16 +308,11 @@ stationSelect();
 
 
 function getTable(dynamicDataJ, StaticDataJ) {
-        //console.log(dynamicBikesJson)
         let dynamic = dynamicDataJ;
         let static = StaticDataJ;
-        console.log(static)
         var selectedStation = document.getElementById("stationSel").value;
-        console.log(selectedStation);
         for (let key in static) {
-            console.log(static[key].name)
             var selectedStation = document.getElementById("stationSel").value;
-            console.log(selectedStation);
             let stationName = static[key].number
             if (selectedStation == stationName) {
 
@@ -361,15 +348,12 @@ function getTable(dynamicDataJ, StaticDataJ) {
     }
 
    function find_closest_marker(event) {
-    // resetRecommendationDiv();
-    console.log(recommendations);
      var distances = [];
-     // var closest = -1;
-     // var secondClosest = -1;
+     closest_positions= [];
+     closest_markers = [];
      for (i = 0; i < markers.length; i++) {
        var d = google.maps.geometry.spherical.computeDistanceBetween(event, markers[i].position);
        distances[i] = d;
-       console.log(distances)
        if (d < 500 && d != 0) {
          closest_markers.push({marker_index: i, distance_lengths: d});
          closest_markers.sort(function (a, b) {
@@ -398,13 +382,9 @@ function getRecommendation(staticBikes, dynamicBikes) {
     var dict = [];
     var result = "";
     for (let key in staticBikes) {
-
-        // console.log(staticBikes[key])
         let stationPosition = ("(" + staticBikes[key].pos_lat + ", " + staticBikes[key].pos_lng + ")");
-        // console.log(staticBikes[key].name);
         for (i = 0; i < closest_positions.length; i++) {
             if (stationPosition == closest_positions[i].marker_positions && dynamicBikes[key].available_bikes > 5) {
-                // console.log(staticBikes[key].name);
                 dict.push({
                     Station_name: staticBikes[key].name,
                     Available_bikes: dynamicBikes[key].available_bikes,
@@ -413,18 +393,15 @@ function getRecommendation(staticBikes, dynamicBikes) {
                 })
 
             }
-            console.log(dict);
             result = dict.reduce((unique, o) => {
                 if (!unique.some(obj => obj.Station_name === o.Station_name && obj.value === o.value)) {
                     unique.push(o);
                 }
                 return unique;
             }, []);
-            console.log(result);
             result.sort(function (a, b) {
                 return a.distances - b.distances;
             });
-            console.log(result);
         }
 
     }
@@ -444,9 +421,7 @@ function getRecommendation(staticBikes, dynamicBikes) {
             result[i].Available_stands + "</td></tr>" + "<tr><td>" +
             result[i].distances + "</td></tr>";
         tableOut += "</table>";
-        document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Stations</h3>" + tableOut;
-
-
+        document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Station with Available Bikes</h3>" + tableOut;
     }
 }
 
