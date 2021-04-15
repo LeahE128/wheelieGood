@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang = "en">
 <head>
-   <head>
-    <title>Displaying Text Directions With setPanel()</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-       <link href="{{ url_for('static', filename ='styles.css') }}" rel = "stylesheet" type = "text/css">
+    <meta charset="UTF-8">
+    <title>HELLO THERE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', filename ='styles.css') }}" rel = "stylesheet" type = "text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-  <body>
+
+<body>
+<div class = "container">
 <div class="nav_bar">
         <header>
-            <h1>Wheelie Good - Dublin Bikes</h1>
 		      <nav>
+                  <h1><i class="fa fa-bicycle" style="font-size:48px;color:lightgrey"></i> Wheelie Good - Dublin Bikes </h1>
 			     <ul>
-				    <li><a href="/">Home</a></li>
-				    <li class="current"><a href="/RoutePlanner.html">Plan your Journey</a></li>
-				    <li><a href="/about.html">About Us</a></li>
-				    <li><a href="/contact.html">Contact Us</a></li>
+				    <li><a id = "home" href="/">Home</a></li>
+				    <li class="current"><a id = "route" href="/RoutePlanner.html">Plan your Journey</a></li>
+				    <li><a id = "about" href="/contact.html">Contact Us</a></li>
+                     <li><a id = "lightmode"></a><button onclick="myFunction()">Toggle dark mode</button></li>
 			     </ul>
 		      </nav>
             </header>
-        </div>
+<section>
+    <aside class="col_sidebar">
+      <div id = "Weather_Title"><h2><i class="fa fa-info-circle" style="font-size:30px;color:#39FF14"></i> Information Panel</h2></div>
     <div id="floating-panel">
       <strong>Start:</strong>
       <select id="start">
@@ -29,17 +34,22 @@
       <select id="end">
        </select>
     </div>
+        <div id="bikeTable"></div>
+<div id="prediction"><h2>Predicting Bike and Station Availability</h2></div>
     <div id="right-panel"></div>
+    </aside>
     <div id="map"></div>
+    </section>
+</div>
+    </div>
 
-<div id="bikeTable"></div>
-<div id="prediction"></div>
+
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='planner.js') }}"></script>
       <script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC99AyuHEKOKE1VeDkJuM5MKF-RdTIXEAU&callback=initMap&libraries=&v=weekly" async></script>
-  </body>
+</body>
 </html>
 
 
