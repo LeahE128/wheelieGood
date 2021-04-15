@@ -72,6 +72,9 @@ function initMap() {
             const marker = new google.maps.Marker({
                 position: {lat: bikes.pos_lat, lng: bikes.pos_lng},
                 map: map,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/pink-dot.png"
+                }
             });
             markers.push(marker);
 
