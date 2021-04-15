@@ -41,7 +41,7 @@ function initMap() {
 
         const onChangeHandler = function () {
             calculateAndDisplayRoute(directionsService, directionsRenderer);
-            document.getElementById("right-panel").innerHTML += "<h5>Text Directions</h5>";
+            // document.getElementById("right-panel").innerHTML += "<h5>Text Directions</h5>";
         };
         document
             .getElementById("start")
