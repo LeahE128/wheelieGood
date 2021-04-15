@@ -291,12 +291,11 @@ stationSelect();
         fetch("/weather").then(response => {
             return response.json();
         }).then(data => {
-            const last_item = data.length - 1;
-            const weather_main = data[last_item].weather_main;
-            const weather_icon = data[last_item].weather_icon;
-            const weather_city = data[last_item].city_name;
+            const weather_main = data[0].weather_main;
+            const weather_icon = data[0].weather_icon;
+            const weather_city = data[0].city_name;
             var d = new Date();
-            const weather_temp = data[last_item].main_temp - 273.53;
+            const weather_temp = data[0].main_temp - 273.53;
             var weather_temp_int = parseInt(weather_temp);
             var iconurl = "http://openweathermap.org/img/w/" + weather_icon + ".png";
             document.getElementById("weather_today").innerHTML = d.toDateString();

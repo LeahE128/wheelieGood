@@ -71,7 +71,7 @@ def dynamic_weather():
     engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood",
                            echo=True)
     # Using static bike table
-    df = pd.read_sql("SELECT * from weather", engine)
+    df = pd.read_sql("SELECT * from weather ORDER BY dt DESC LIMIT 100;", engine)
     weather_data = df.to_json(orient="records")
     return weather_data
 
@@ -185,6 +185,6 @@ def model(station_id, hour, day):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000, host="0.0.0.0")
+    app.run(debug=True, port=5000)
 
 
