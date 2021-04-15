@@ -34,12 +34,14 @@ function initMap() {
 
         directionsRenderer.setMap(map);
         directionsRenderer.setPanel(document.getElementById("right-panel"));
-        const control = document.getElementById("floating-panel");
-        control.style.display = "block";
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+        // const control = document.getElementById("floating-panel");
+        // control.innerHTML = "<h2>Directions</h2>";
+        // control.style.display = "block";
+
 
         const onChangeHandler = function () {
             calculateAndDisplayRoute(directionsService, directionsRenderer);
+            document.getElementById("right-panel").innerHTML += "<h5>Text Directions</h5>";
         };
         document
             .getElementById("start")
@@ -57,6 +59,7 @@ function initMap() {
 
         document.getElementById("start").innerHTML += route_select;
         document.getElementById("end").innerHTML += route_select;
+
 
         var selectedRoute = document.getElementById("start").value;
 

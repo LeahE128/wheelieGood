@@ -4,7 +4,7 @@ html {
   background-color: white;
   background-size: cover;
   font-family: "Trebuchet MS";
-  color: Black;
+  color: grey;
   height: 100%;
   width: 100%;
 }
@@ -85,7 +85,7 @@ header .current a {
   height:90vh;
   overflow-y: scroll;
   bottom: 0;
-  background-color: black;
+  background-color: grey;
   float:left;
   text-align: center;
   border-top: solid 4px white;
@@ -144,7 +144,7 @@ header .current a {
   border-bottom: solid 4px white;
   color:white;
   top: 0;
-  background-color:black;
+  background-color:grey;
 
 
 }
@@ -153,7 +153,7 @@ header .current a {
   border-top: solid 4px white;
   color:white;
   top: 0;
-  background-color:black;
+  background-color:grey;
 
 
 }
