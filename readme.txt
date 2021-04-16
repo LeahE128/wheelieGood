@@ -25,7 +25,7 @@ in the conda command prompt.
 
 3. How to Use:
 
-The application ip is: PUT HERE. This can be navigated to throw a browser address bar. 
+The application ip is: http://ec2-3-85-18-119.compute-1.amazonaws.com:5000/ . This can be navigated to throw a browser address bar. 
 
 The application has two pages, a default index page that displays current information about the bike stands, and an additional "Plan your Journey"
 page, which provides future and predictive features. 
