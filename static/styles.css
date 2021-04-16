@@ -2,370 +2,367 @@
 
 html {
 
-  background-size: cover;
-  font-family: "Trebuchet MS";
-  height: 100%;
-  width: 100%;
+    background-size: cover;
+    font-family: "Trebuchet MS";
+    height: 100%;
+    width: 100%;
 }
 
 body {
-  font-family: trebuchet ms;
-  color: black;
-  background-color: white;
-  text-align: center;
-  height: 90%;
-  width: 100%;
+    font-family: trebuchet ms;
+    color: black;
+    background-color: white;
+    text-align: center;
+    height: 90%;
+    width: 100%;
 }
 
 .container {
-  margin: 0 auto;    /* This centers the page in modern browsers */
-  text-align: left;  /* This is a hack for older browsers to center the page */
+    margin: 0 auto; /* This centers the page in modern browsers */
+    text-align: left; /* This is a hack for older browsers to center the page */
 }
 
 header {
-  background-color: black;
-  text-align: center;
-  font-size: 35px;
-  color: white;
+    background-color: black;
+    text-align: center;
+    font-size: 35px;
+    color: white;
 }
 
 header h1 {
-  float: left;
-  margin-left: 2%;
-  border: 0;
-  color: white;
-  font-size: 30px;
+    float: left;
+    margin-left: 2%;
+    border: 0;
+    color: white;
+    font-size: 30px;
 }
 
 section {
-  display: -webkit-flex;
-  display: flex;
-  flex-basis: 100%;
+    display: -webkit-flex;
+    display: flex;
+    flex-basis: 100%;
 }
 
 header nav {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  background: #8d2663;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 24px;
-  color: black;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    background: #8d2663;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 24px;
+    color: black;
 }
 
-header nav ul{
-  color: white;
+header nav ul {
+    color: white;
 }
 
 header nav ul li {
-  display: inline-block;
-  text-decoration: none;
-  color: white;
+    display: inline-block;
+    text-decoration: none;
+    color: white;
 
 }
-
 
 
 header nav ul li a:hover {
-  color: lightgrey;
+    color: lightgrey;
 }
 
 header nav ul li a {
-  font-weight: bold;
-  font-size: 25px;
-  text-decoration-line: none;
-  color: white;
+    font-weight: bold;
+    font-size: 25px;
+    text-decoration-line: none;
+    color: white;
 }
 
 header .current a {
-  color: lightgrey;
-  border-bottom: solid 2px lightgrey;
+    color: lightgrey;
+    border-bottom: solid 2px lightgrey;
 }
 
 #col_sidebar {
-   -webkit-flex: 1.5;
-  -ms-flex: 1.5;
-  flex: 1.5;
-  flex-grow: 1.5;
-  height:90vh;
-  overflow-y: scroll;
-  bottom: 0;
-  background-color: #ababab;
-  float:left;
-  text-align: center;
-  border-top: solid 4px white;
-  color: white;
+    -webkit-flex: 1.5;
+    -ms-flex: 1.5;
+    flex: 1.5;
+    flex-grow: 1.5;
+    height: 90vh;
+    overflow-y: scroll;
+    bottom: 0;
+    background-color: #ababab;
+    float: left;
+    text-align: center;
+    border-top: solid 4px white;
+    color: white;
 }
+
 #dailyChart {
-  background-color: black;
-  margin:10% auto;
-  margin-left:10%;
-  margin-right:10%;
-  position: center;
+    background-color: black;
+    margin: 10% auto;
+    margin-left: 10%;
+    margin-right: 10%;
+    position: center;
 }
 
 #hourlyChart {
-  background-color: black;
-  margin:10% auto;
-  margin-left:10%;
-  margin-right:10%;
-  position: center;
+    background-color: black;
+    margin: 10% auto;
+    margin-left: 10%;
+    margin-right: 10%;
+    position: center;
 }
 
 
 #city {
-  margin-top: 2px;
-  font-family: Poiret One;
-  font-size: 20px;
-  color: #ff0dbf;
-  background-color: black;
-  border: solid 1px lightgrey;
+    margin-top: 2px;
+    font-family: Poiret One;
+    font-size: 20px;
+    color: #ff0dbf;
+    background-color: black;
+    border: solid 1px lightgrey;
 }
 
 #temp {
-  font-family: Poiret One;
-  font-size: 40px;
-  margin-left: 10%;
-  color: black;
-  float:left;
+    font-family: Poiret One;
+    font-size: 40px;
+    margin-left: 10%;
+    color: black;
+    float: left;
 }
 
 #weather_description {
-  font-family: Poiret One;
-  font-size: 20px;
-  font-weight: bold;
-  color: black;
+    font-family: Poiret One;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
 
 }
 
 #weather_icon img {
-  font-family: sans-serif;
-  width: 30%;
-  height: 30%;
+    font-family: sans-serif;
+    width: 30%;
+    height: 30%;
 
 
 }
 
-#weather_title{
-  border-bottom: solid 4px white;
-  color:white;
-  top: 0;
-
+#weather_title {
+    border-bottom: solid 4px white;
+    color: white;
+    top: 0;
 
 
 }
 
-#prediction{
-  border-top: solid 4px white;
-  color:white;
-  top: 0;
-  background-color:#ababab;
+#prediction {
+    border-top: solid 4px white;
+    color: white;
+    top: 0;
+    background-color: #ababab;
 
 
 }
 
 #right-panel {
-  margin-left: 10%;
-  width: 30%;
-  height: 30%;
-  position: relative;
-}
-#weather_today{
-  border-bottom: solid 1px black;
-  color:black;
-  font-family: "Poiret One";
-  font-size: 26px;
+    margin-left: 10%;
+    width: 30%;
+    height: 30%;
+    position: relative;
 }
 
-#weather_section{
-  color:#8d2663;
+#weather_today {
+    border-bottom: solid 1px black;
+    color: black;
+    font-family: "Poiret One";
+    font-size: 26px;
+}
+
+#weather_section {
+    color: #8d2663;
 }
 
 div.weather_widget {
-  margin: 0 auto;
-  min-width: 210px;
-  max-width: 210px;
-  min-height: 15%;
-  max-height: 15%;
-  background-color: #fcfdfd;
-  box-shadow: 0px 31px 35px -26px #080c21;
-  text-align: center;
-  color: #8d2663;
+    margin: 0 auto;
+    min-width: 210px;
+    max-width: 210px;
+    min-height: 15%;
+    max-height: 15%;
+    background-color: #fcfdfd;
+    box-shadow: 0px 31px 35px -26px #080c21;
+    text-align: center;
+    color: #8d2663;
 
 }
 
 
-
-
 h2 {
-  color: white;
+    color: white;
 }
 
 
 #map {
-  -webkit-flex: 3;
-  -ms-flex: 3;
-  flex: 3;
-  height:90vh;
-  width:100vh;
-  background-color: #f1f1f1;
+    -webkit-flex: 3;
+    -ms-flex: 3;
+    flex: 3;
+    height: 90vh;
+    width: 100vh;
+    background-color: #f1f1f1;
 }
 
 #bikeTable {
-  border-collapse: collapse;
-  font-size: 0.9em;
-  color:white;
-  margin: 0 auto;
-  display: table;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    color: white;
+    margin: 0 auto;
+    display: table;
 
 
 }
 
-.th1 { height: 25%; }
+.th1 {
+    height: 25%;
+}
 
 
-#bikeTable h3{
-  margin-top: 10%;
-  border-collapse: collapse;
-  font-size: 0.9em;
-  color:white;
+#bikeTable h3 {
+    margin-top: 10%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    color: white;
 
 
 }
 
 thead {
-  text-align: left;
-  float: left;
+    text-align: left;
+    float: left;
 }
 
 tbody {
-  float: right;
-  margin: 0 auto;
+    float: right;
+    margin: 0 auto;
 }
 
 thead tr {
-  background-color: grey;
-  color: #8d2663;
-  text-align: left;
-  font-weight: bold;
+    background-color: grey;
+    color: #8d2663;
+    text-align: left;
+    font-weight: bold;
 
 }
 
 tbody tr {
-  background-color: azure;
+    background-color: azure;
 
 }
 
 tbody td {
-  text-align: center;
-  padding: 12px 15px;
-  height: 59.55px;
-  /*min-height: 200px;*/
-  /*max-height: 200px;*/
-  min-width: 122px;
-  max-width: 122px;
-  color: black;
+    text-align: center;
+    padding: 12px 15px;
+    height: 59.55px;
+    /*min-height: 200px;*/
+    /*max-height: 200px;*/
+    min-width: 122px;
+    max-width: 122px;
+    color: black;
 }
 
 thead th {
-  height: 60px;
-  padding: 12px 15px;
-  display: block;
-  border-bottom: 1px solid black;
+    height: 60px;
+    padding: 12px 15px;
+    display: block;
+    border-bottom: 1px solid black;
 }
 
 tbody tr:nth-of-type(even) {
-  background-color: aliceblue;
+    background-color: aliceblue;
 }
 
 #chart {
-  height: 50%;
-  width: 50%;
+    height: 50%;
+    width: 50%;
 }
-
 
 
 @media (max-width: 600px) {
-  section {
-    -webkit-flex-direction: column;
-    flex-direction: column;
-  }
+    section {
+        -webkit-flex-direction: column;
+        flex-direction: column;
+    }
 }
 
-#station_title{
-  margin-top: 10%;
-  border-top: solid 4px white;
-
+#station_title {
+    margin-top: 10%;
+    border-top: solid 4px white;
 
 
 }
 
-#recommendations{
- border-collapse: collapse;
-  font-size: 0.9em;
-  color:white;
-  margin: 0 auto;
-  display: table;
+#recommendations {
+    border-collapse: collapse;
+    font-size: 0.9em;
+    color: white;
+    margin: 0 auto;
+    display: table;
 }
 
-#recommendations thead{
-   text-align: left;
-  float: left;
+#recommendations thead {
+    text-align: left;
+    float: left;
 
 }
 
 #recommendations tbody {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 #recommendations thead tr {
-  background-color: grey;
-  color: #8d2663;
-  text-align: left;
-  font-weight: bold;
+    background-color: grey;
+    color: #8d2663;
+    text-align: left;
+    font-weight: bold;
 
 }
 
 #recommendations tbody tr {
-  background-color: azure;
+    background-color: azure;
 
 }
 
 #recommendations tbody td {
-  text-align: center;
-  padding: 12px 15px;
-  height: 59.55px;
-  /*min-height: 200px;*/
-  /*max-height: 200px;*/
-  min-width: 122px;
-  max-width: 122px;
-  color: black;
+    text-align: center;
+    padding: 12px 15px;
+    height: 59.55px;
+    /*min-height: 200px;*/
+    /*max-height: 200px;*/
+    min-width: 122px;
+    max-width: 122px;
+    color: black;
 }
 
 #recommendations thead th {
- height: 60px;
-  padding: 12px 15px;
-  display: block;
-  border-bottom: 1px solid black;
+    height: 60px;
+    padding: 12px 15px;
+    display: block;
+    border-bottom: 1px solid black;
 }
 
 #recommendations tbody tr:nth-of-type(even) {
-  background-color: aliceblue;
+    background-color: aliceblue;
 }
-
 
 
 .dark-mode {
-  background-color: #2d2d2d !important;
-  color: white !important;
+    background-color: #2d2d2d !important;
+    color: white !important;
 }
 
 #bulb_button:hover {
-  background-color: #fceea7 !important;
+    background-color: #fceea7 !important;
 }
 
-#bulb_button{
-  border: none !important;
+#bulb_button {
+    border: none !important;
 }

@@ -79,16 +79,16 @@ function availabilityPrediction() {
         // items for dropdowns
         let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         let currentDate = new Date();
-        let weekday = currentDate.getDay() -1;
+        let weekday = currentDate.getDay() - 1;
         let cDay = currentDate.getDate();
-        let cMonth = currentDate.getMonth() +1;
+        let cMonth = currentDate.getMonth() + 1;
         let cYear = currentDate.getFullYear();
         // let time = currentDate.getHours()
 
         for (var i = 0; i < 24; i++) {
             if (i < 10)
-                i = "0"+i
-            hour_prediction += "<option value =" + i + ">" + i+":00" + "</option>";
+                i = "0" + i
+            hour_prediction += "<option value =" + i + ">" + i + ":00" + "</option>";
         }
 
         // Populate dropdown with appropriate indexes as values, for model
@@ -114,11 +114,11 @@ function availabilityPrediction() {
     })
 }
 
-    document.getElementById("prediction").addEventListener("click", function() {
-        hourValue = document.getElementById("predictedHour").value;
-        dayValue = document.getElementById("predictedDay").value;
-        stationValue = document.getElementById("predictedStation").value;
-    })
+document.getElementById("prediction").addEventListener("click", function () {
+    hourValue = document.getElementById("predictedHour").value;
+    dayValue = document.getElementById("predictedDay").value;
+    stationValue = document.getElementById("predictedStation").value;
+})
 
 
 function predictionValues(stationNumber, hour, day) {
@@ -127,23 +127,23 @@ function predictionValues(stationNumber, hour, day) {
     }).then(data => {
         console.log(data)
         let tableOut = "<table>";
-                tableOut += "<thead>" + "<tr>" +
-                    "<th>Station Name</th>" +
-                    "<th>Station Number</th>" +
-                    "<th>Predicted Available Stands</th>" +
-                    "<th>Predicted Available Bikes</th></tr>" +
-                    "</thead>";
+        tableOut += "<thead>" + "<tr>" +
+            "<th>Station Name</th>" +
+            "<th>Station Number</th>" +
+            "<th>Predicted Available Stands</th>" +
+            "<th>Predicted Available Bikes</th></tr>" +
+            "</thead>";
 
 
-                tableOut += "<tr><td>" +
-                    data.station_name + "</td></tr>" + "<tr><td>" +
-                    stationNumber + "</td></tr>" + "<tr><td>" +
-                    data.predicted_available_stands + "</td></tr>" + "<tr><td>" +
-                    data.predicted_bikes + "</td></tr>";
-                tableOut += "</table>";
+        tableOut += "<tr><td>" +
+            data.station_name + "</td></tr>" + "<tr><td>" +
+            stationNumber + "</td></tr>" + "<tr><td>" +
+            data.predicted_available_stands + "</td></tr>" + "<tr><td>" +
+            data.predicted_bikes + "</td></tr>";
+        tableOut += "</table>";
 
-                document.getElementById("bikeTable").innerHTML = tableOut;
-        })
+        document.getElementById("bikeTable").innerHTML = tableOut;
+    })
 }
 
 
@@ -155,13 +155,13 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             origin: start,
             destination: end,
             travelMode: google.maps.TravelMode.DRIVING,
-      },
+        },
         (response, status) => {
-        if (status === "OK") {
-            directionsRenderer.setDirections(response);
-        } else {
-            window.alert("Directions request failed due to " + status);
+            if (status === "OK") {
+                directionsRenderer.setDirections(response);
+            } else {
+                window.alert("Directions request failed due to " + status);
+            }
         }
-      }
-     );
+    );
 }
