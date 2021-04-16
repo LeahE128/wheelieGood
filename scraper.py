@@ -8,9 +8,8 @@ import mysql.connector
 import config
 import time
 
-
 stations_request = requests.get(config.STATIONS,
-                                        params={"apiKey": config.APIKEY, "contract": config.NAME})
+                                params={"apiKey": config.APIKEY, "contract": config.NAME})
 
 # Request Data from API
 engine = create_engine(f"mysql+mysqlconnector://{config.user}:{config.passw}@{config.uri}:3306/wheelieGood", echo=True)
@@ -20,53 +19,52 @@ meta = MetaData()
 
 # Creating static bike table and columns
 static_bikes = Table(
-'static_bikes', meta,
-Column('number', Integer),
-Column('name', String(128)),
-Column('address', String(128)),
-Column('pos_lat', Float),
-Column('pos_lng', Float),
-Column('bike_stands', Integer)
+    'static_bikes', meta,
+    Column('number', Integer),
+    Column('name', String(128)),
+    Column('address', String(128)),
+    Column('pos_lat', Float),
+    Column('pos_lng', Float),
+    Column('bike_stands', Integer)
 )
 
 # Creating dynamic bike table and columns
 dynamic_bikes = Table(
-'dynamic_bikes', meta,
-Column('number', Integer),
-Column('available_bike_stands', Integer),
-Column('available_bikes', Integer),
-Column('last_update', DateTime)
+    'dynamic_bikes', meta,
+    Column('number', Integer),
+    Column('available_bike_stands', Integer),
+    Column('available_bikes', Integer),
+    Column('last_update', DateTime)
 )
 
 # Creating weather table and columns
 weather = Table(
-'weather', meta,
-Column('coord_lon', Float),
-Column('coord_lat', Float),
-Column('weather_main', String(128)),
-Column('weather_description', String(128)),
-Column('weather_icon', String(128)),
-Column('main_temp', Float),
-Column('main_pressure', Integer),
-Column('main_humidity', Integer),
-Column('main_temp_min', Float),
-Column('main_temp_max', Float),
-Column('visibility', Integer),
-Column('wind_speed', Float),
-Column('wind_deg', Integer),
-Column('clouds_all', Integer),
-Column('dt', DateTime),
-Column('sys_type', Integer),
-Column('sys_id', Integer),
-Column('sys_country', String(128)),
-Column('sys_sunrise', DateTime),
-Column('sys_sunset', DateTime),
-Column('city_id', Integer),
-Column('city_name', String(128)),
-Column('cod', Integer),
-Column('Current Time', DateTime)
+    'weather', meta,
+    Column('coord_lon', Float),
+    Column('coord_lat', Float),
+    Column('weather_main', String(128)),
+    Column('weather_description', String(128)),
+    Column('weather_icon', String(128)),
+    Column('main_temp', Float),
+    Column('main_pressure', Integer),
+    Column('main_humidity', Integer),
+    Column('main_temp_min', Float),
+    Column('main_temp_max', Float),
+    Column('visibility', Integer),
+    Column('wind_speed', Float),
+    Column('wind_deg', Integer),
+    Column('clouds_all', Integer),
+    Column('dt', DateTime),
+    Column('sys_type', Integer),
+    Column('sys_id', Integer),
+    Column('sys_country', String(128)),
+    Column('sys_sunrise', DateTime),
+    Column('sys_sunset', DateTime),
+    Column('city_id', Integer),
+    Column('city_name', String(128)),
+    Column('cod', Integer),
+    Column('Current Time', DateTime)
 )
-
 
 meta.create_all(engine)
 

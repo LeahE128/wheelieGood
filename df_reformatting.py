@@ -3,7 +3,7 @@ import numpy as np
 import requests
 
 
-def format_mine(dataframe):
+def format_both_df(dataframe):
     icon_values = []
     weather_values = []
     for x in dataframe["weather"]:
@@ -61,7 +61,7 @@ def formatting_hourly_data(forecast_data, hour, day, weather_status):
     hourly_df = hourly_df.reindex(hourly_df.columns.tolist() + weather_status, axis=1)
     print(hourly_df.head(1))
 
-    weather_df = format_mine(hourly_df)
+    weather_df = format_both_df(hourly_df)
 
     # get the row as before, but we need to return a list for the ML
     values_to_return = weather_df[(weather_df["hour"] == hour) & (weather_df["weekday"] == day)].values.tolist()
@@ -83,7 +83,7 @@ def formatting_daily_data(forecast_data, day, weather_status):
     daily_df = daily_df.reindex(daily_df.columns.tolist() + weather_status, axis=1)
     daily_df = daily_df.rename(columns={'temp.day': 'temp'})
 
-    weather_df = format_mine(daily_df)
+    weather_df = format_both_df(daily_df)
 
     weatherValues = []
     for x in daily_df["weather"]:
@@ -104,4 +104,3 @@ def reformatting_static_bikes(static_data, number):
     formatted_list = (desired_list[0])
     print(formatted_list)
     return formatted_list
-

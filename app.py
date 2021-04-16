@@ -8,6 +8,7 @@ import pickle
 import requests
 import df_reformatting
 import warnings
+
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
@@ -66,6 +67,7 @@ def all_bikes():
     all_data = df.to_json(orient="records")
     return all_data
 
+
 @app.route("/weather")
 @lru_cache()
 def dynamic_weather():
@@ -118,6 +120,7 @@ def get_occupancy_hourly(station_id):
     res_df['last_update'] = res_df.index
     return res_df.to_json(orient='records')
 
+
 @app.route("/contact")
 def contact():
     d = {'name': 'Team Wheelie Good'}
@@ -142,7 +145,8 @@ def model(station_id, hour, day):
     station_info = df_reformatting.reformatting_static_bikes(static_bikes_df, station_id)
 
     # call the forecast api and parse as a json
-    forecast_request = requests.get(f"https://api.openweathermap.org/data/2.5/onecall?lat=53.33306&lon=-6.24889&exclude=current,minutely&appid={config.forecast_api}")
+    forecast_request = requests.get(
+        f"https://api.openweathermap.org/data/2.5/onecall?lat=53.33306&lon=-6.24889&exclude=current,minutely&appid={config.forecast_api}")
     forecast_data = forecast_request.json()
 
     # parse the data for the desired row and return it as a list
@@ -178,7 +182,7 @@ def model(station_id, hour, day):
             result.insert(1, weather_values[index])
 
     result = result[0:5]
-    result.extend((station_info[1], station_info[5]-prediction, weather_icon))
+    result.extend((station_info[1], station_info[5] - prediction, weather_icon))
 
     # zip the list to dictionary for return to js
     keys = ["predicted_bikes", "weather", "temp", "wind_speed", "humidity",
@@ -189,5 +193,3 @@ def model(station_id, hour, day):
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
-
-
