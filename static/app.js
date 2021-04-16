@@ -76,15 +76,14 @@ function initMap() {
                 }
             });
             markers.push(marker);
-
-            map.addListener("center_changed", () => {
-                //3 seconds after the center of the map has changed, pan back to the
-                //marker.
-                window.setTimeout(() => {
-                    map.panTo({lat: 53.349804, lng: -6.260310});
-                    map.setZoom(13)
-                }, 5000);
-            });
+            // map.addListener("center_changed", () => {
+            //     //3 seconds after the center of the map has changed, pan back to the
+            //     //marker.
+            //     window.setTimeout(() => {
+            //         map.panTo({lat: 53.349804, lng: -6.260310});
+            //         map.setZoom(13)
+            //     }, 5000);
+            // });
             marker.addListener("click", () => {
                 let clickedMarker = marker.position;
                 map.setZoom(17);
@@ -115,13 +114,9 @@ function initMap() {
                 drawOccupancyWeekly(bikes.number);
                 drawOccupancyHourly(bikes.number);
             });
-
         })
-
-
     }).catch(err => {
         console.log("OOPS!", err);
-
     })
 }
 
@@ -277,7 +272,6 @@ function stationSelect() {
         var selectedStation = document.getElementById("stationSel").value;
     })
 }
-
 document.getElementById("stationSelDiv").addEventListener("click", function () {
     var selectedStation = document.getElementById("stationSel").value;
 })
@@ -342,8 +336,6 @@ function getTable(dynamicDataJ, StaticDataJ) {
 
             drawOccupancyWeekly(selectedStation);
             drawOccupancyHourly(selectedStation);
-
-
         }
     }
 }
@@ -361,7 +353,6 @@ function find_closest_marker(event) {
                 return a.distance_lengths - b.distance_lengths;
             });
         }
-
     }
 
     for (i = 0; i < closest_markers.length; i++) {
@@ -372,7 +363,6 @@ function find_closest_marker(event) {
             marker_positions: markers[closest_markers[i].marker_index].position,
             distance_lengths: closest_markers[i].distance_lengths / 1000
         });
-
     }
 }
 
@@ -407,25 +397,22 @@ function getRecommendation(staticBikes, dynamicBikes) {
                 return a.distances - b.distances;
             });
         }
-
     }
     var html = "";
-    for (var i = 0; i < result.length; i++) {
-        let tableOut = "<table>";
-        tableOut += "<thead>" + "<tr>" +
-            "<th>Station Name</th>" +
-            "<th>Available Bikes</th>" +
-            "<th>Available Bike Stands</th>" +
-            "<th>Distance in km</th></tr>" +
-            "</thead>";
+    let tableOut = "<table>";
+    tableOut += "<thead>" + "<tr>" +
+        "<th>Station Name</th>" +
+        "<th>Available Bikes</th>" +
+        "<th>Available Bike Stands</th>" +
+        "<th>Distance in km</th></tr>" +
+        "</thead>";
 
-        tableOut += "<tr><td>" +
-            result[i].Station_name + "</td></tr>" + "<tr><td>" +
-            result[i].Available_bikes + "</td></tr>" + "<tr><td>" +
-            result[i].Available_stands + "</td></tr>" + "<tr><td>" +
-            result[i].distances + "</td></tr>";
-        tableOut += "</table>";
-        document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Station with Available Bikes</h3>" + tableOut;
-    }
+    tableOut += "<tr><td>" +
+        result[0].Station_name + "</td></tr>" + "<tr><td>" +
+        result[0].Available_bikes + "</td></tr>" + "<tr><td>" +
+        result[0].Available_stands + "</td></tr>" + "<tr><td>" +
+        result[0].distances + "</td></tr>";
+    tableOut += "</table>";
+    document.getElementById("recommendations").innerHTML = "<h3>Next Nearest Station with Availability</h3>" + tableOut;
 }
 
