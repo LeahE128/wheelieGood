@@ -33,6 +33,8 @@ page, which provides future and predictive features.
 Both pages contain a main map section and a information flex box. Interacting with the map or the drop downs will populate the scrollable flex
 box with dynamic data. 
 
+![wheelieGood](https://github.com/LeahE128/wheelieGood/blob/master/wheelieGood.png)
+
 
 
 
