@@ -32,8 +32,30 @@ page, which provides future and predictive features.
 
 Both pages contain a main map section and a information flex box. Interacting with the map or the drop downs will populate the scrollable flex
 box with dynamic data. 
+   
+Home Page:
 
 ![wheelieGood](https://github.com/LeahE128/wheelieGood/blob/master/wheelieGood.png)
+   
+Daily Average Availability Information for Stations on Home page of Wheelie Good Web Application:
+   
+![wheelieGood](https://github.com/LeahE128/wheelieGood/blob/master/analytics.png)
+ 
+Hourly Average Availability Information for Stations on Home page of Wheelie Good Web Application:
+
+![wheelieGood](https://github.com/LeahE128/wheelieGood/blob/master/analytics2.png)
+
+Next Nearest Station Feature on the Wheelie Good Dublin Bikes Application:
+ 
+![wheelieGood](https://github.com/LeahE128/wheelieGood/blob/master/analytics3.png)
+ 
+Predicted Availability Informationon the Plan your Journey page in the Wheelie Good Web Application:
+   
+![wheelieGood](https://github.com/LeahE128/wheelieGood/blob/master/analytics4.png)
+ 
+Directions panel on the Plan your Journey page in the Wheelie Good Web Application:
+ 
+![wheelieGood](https://github.com/LeahE128/wheelieGood/blob/master/analytics5.png)
 
 
 
